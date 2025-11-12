@@ -44,8 +44,22 @@
            --df-messenger-header-font-color: #4C3F30;
            --df-messenger-user-message-background-color: #D4AF37;
            --df-messenger-user-message-font-color: #4C3F30;
-           --df-messenger-chat-background-color: #D4AF37;
+           --df-messenger-chat-background-color: #FBF8E8;
            --df-messenger-chat-icon-color: #4C3F30;
+           position: fixed;
+           bottom: 20px;
+           right: 20px;
+           z-index: 999;
+           opacity: 0;
+           transform: scale(0.8);
+           transition: opacity 0.5s ease, transform 0.5s ease;
+           pointer-events: none;
+        }
+        
+        df-messenger.show {
+           opacity: 1;
+           transform: scale(1);
+           pointer-events: all;
         }
     </style>
     </head>
@@ -58,6 +72,7 @@
         <p>มัคคุเทศก์ AI แห่งวัดพระธาตุไชยา พร้อมให้บริการค่ะ</p>
         <button id="start-chat-button">เริ่มสนทนา</button>
     </div>
+    
     <script src="https://www.gstatic.com/dialogflow-console/fast/messenger/bootstrap.js?v=1"></script>
     <df-messenger
       intent="WELCOME"
@@ -65,19 +80,29 @@
       agent-id="2f3ad8d0-abd6-49dd-a7ac-ad9024c74e62"
       language-code="th"
     ></df-messenger>
+    
     <script>
         window.onload = () => {
             
             const startButton = document.getElementById('start-chat-button');
             const contentWrapper = document.getElementById('content-wrapper');
+            const dfMessenger = document.querySelector('df-messenger');
 
-            if (!startButton || !contentWrapper) {
+            if (!startButton || !contentWrapper || !dfMessenger) {
                 console.error("Error: ไม่สามารถโหลดองค์ประกอบหน้าเว็บได้");
                 return;
             }
 
             startButton.addEventListener('click', () => {
                 contentWrapper.classList.add('hidden');
+                
+                setTimeout(() => {
+                    dfMessenger.classList.add('show');
+                    const chatIcon = dfMessenger.shadowRoot?.querySelector('.chat-wrapper');
+                    if (chatIcon) {
+                        chatIcon.click();
+                    }
+                }, 500);
             });
             
             function createLeaves() {
