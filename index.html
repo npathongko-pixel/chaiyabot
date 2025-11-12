@@ -199,6 +199,7 @@
            --df-messenger-chat-icon-color: #4C3F30;
            --df-messenger-bot-message: #FFFFFF;
            --df-messenger-bot-message-font-color: #4C3F30;
+           --df-messenger-font-family: 'Arial', sans-serif;
            position: fixed;
            top: 50%;
            left: 50%;
@@ -213,6 +214,14 @@
         df-messenger.show {
            visibility: visible;
            opacity: 1;
+        }
+        
+        /* รองรับรูปภาพในแชท */
+        df-messenger img {
+           max-width: 100%;
+           height: auto;
+           border-radius: 8px;
+           margin: 8px 0;
         }
         
         /* ปรับแต่งไอคอนแชทบอท */
