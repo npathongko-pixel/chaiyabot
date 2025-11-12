@@ -3,64 +3,165 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>แชทบอทวัดพระธาตุไชยา</title>
+    <title>สื่ออัจฉริยะ: แชทบอทวัดพระธาตุไชยา</title>
 
     <style>
         /* ตั้งค่าฟอนต์และพื้นหลังของหน้าเว็บ */
-        body {
-            font-family: Arial, sans-serif;
+        html, body {
+            height: 100%;
             margin: 0;
             padding: 0;
-            /* ----- 🎨 สีพื้นหลัง (สีครีมอ่อน) ----- */
-            background-color: #FAF3E0; 
+            font-family: Arial, sans-serif;
+            overflow: hidden; /* ป้องกันการเลื่อนหน้าจอ */
         }
 
-        /* จัดสไตล์กล่องข้อความต้อนรับ */
-        .welcome-container {
+        /* ----- 🎨 พื้นหลังแบบอลังการ (ไล่สี) ----- */
+        body {
+            /* ไล่สีจากสีครีม (บน) ไปยังสีทองอ่อนๆ (ล่าง) */
+            background: linear-gradient(180deg, #FAF3E0 0%, #FBF8E8 60%, #E0CA8F 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* ----- กล่องเนื้อหาหลัก (ที่อยู่ตรงกลาง) ----- */
+        #content-wrapper {
             text-align: center;
-            padding: 50px 20px;
             color: #5C4033; /* สีน้ำตาลเข้ม */
-        }
-        .welcome-container h1 {
-            font-size: 2.5em;
-            margin-bottom: 10px;
-        }
-        .welcome-container p {
-            font-size: 1.2em;
+            /* เพิ่มเอฟเฟกต์ "กระจกฝ้า" ให้ดูหรูหรา */
+            background: rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.1);
+            transition: opacity 0.5s ease; /* เอฟเฟกต์ Fade */
         }
 
-        /* ----- 🎨 ตกแต่งหน้าต่าง Chatbot ----- */
+        /* ----- 🎨 โมเดล "น้องศรีวิชัย" ----- */
+        #nong-srivi-model {
+            width: 150px;
+            height: 150px;
+            margin: 0 auto 20px auto;
+            border-radius: 50%; /* วงกลม */
+            
+            /* ไล่สีทองอร่าม */
+            background: linear-gradient(45deg, #D4AF37, #FFD700, #F0E68C, #D4AF37);
+            background-size: 200% 200%; /* สำหรับ Animation ไล่สี */
+            
+            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.5); /* เงาสีทอง */
+            
+            /* ----- 🎨 การเคลื่อนไหว ----- */
+            animation: 
+                float 6s ease-in-out infinite, /* ลอยขึ้นลง */
+                shine 4s ease-in-out infinite; /* ไล่สีไปมา */
+        }
+
+        /* Animation "ลอย" (Float) */
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0px); }
+        }
+
+        /* Animation "ไล่สี" (Shine) */
+        @keyframes shine {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+
+        /* ----- 🎨 ปุ่มเริ่มแชท (ปุ่มอลังการ) ----- */
+        #start-chat-button {
+            background-color: #D4AF37; /* สีทอง */
+            color: #5C4033; /* สีน้ำตาลเข้ม */
+            border: none;
+            border-radius: 50px;
+            padding: 15px 40px;
+            font-size: 1.2em;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+        #start-chat-button:hover {
+            transform: scale(1.05); /* ขยายเมื่อชี้ */
+            box-shadow: 0 8px 20px rgba(212, 175, 55, 0.4);
+        }
+
+        
+        /* ----- 🎨 Hack: ย้าย Chatbot มาตรงกลาง! ----- */
+
+        /* 1. ซ่อนปุ่มแชทวงกลม (ของเดิม) ที่มุมล่างขวา */
+        df-messenger {
+            --df-messenger-chat-background-color: transparent; /* ทำให้ปุ่มใส */
+            --df-messenger-chat-icon-color: transparent; /* ทำให้ไอคอนใส */
+        }
+        
+        /* 2. บังคับ "หน้าต่างแชท" (ที่เปิดแล้ว) ให้อยู่ตรงกลางจอ */
+        df-messenger-chat-wrapper.chat-open {
+            position: fixed !important;
+            top: 50% !important;
+            left: 50% !important;
+            transform: translate(-50%, -50%) !important;
+            
+            z-index: 9999;
+            width: 90% !important;
+            max-width: 450px; /* ขนาดหน้าต่างแชท */
+            height: 75vh !important; /* สูง 75% ของจอ */
+            
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            opacity: 0; /* เริ่มต้นให้ใส (สำหรับ Fade in) */
+            animation: fadeInChat 0.5s forwards; /* เอฟเฟกต์ Fade in */
+        }
+
+        @keyframes fadeInChat {
+            from { opacity: 0; transform: translate(-50%, -45%); }
+            to { opacity: 1; transform: translate(-50%, -50%); }
+        }
+
+        /* ----- 🎨 ตกแต่งสี Chatbot (ให้เข้าธีม) ----- */
         df-messenger {
            /* ----- สี "หัวข้อ" (Header) ----- */
            --df-messenger-header-background-color: #D4AF37; /* สีทอง */
            --df-messenger-header-font-color: #4C3F30; /* สีน้ำตาลเข้ม */
 
-           /* ----- สี "ข้อความของ AI" ----- */
-           --df-messenger-bot-message-background-color: #F8F8F8; /* สีเทาอ่อน */
-           --df-messenger-bot-message-font-color: #000000;
-
            /* ----- สี "ข้อความของเรา" ----- */
-           --df-messenger-user-message-background-color: #D4AF37; /* สีทอง */
+           --df-messenger-user-message-background-color: #D4AF37;
            --df-messenger-user-message-font-color: #4C3F30;
-           
-           /* ----- สี "ไอคอนปุ่มแชท" (มุมขวาล่าง) ----- */
-           --df-messenger-chat-background-color: #D4AF37; /* สีทอง */
         }
+
     </style>
     </head>
 <body>
 
-    <div class="welcome-container">
-        <h1>ยินดีต้อนรับ</h1>
-        <p>สู่ "สื่อประชาสัมพันธ์อัจฉริยะ: แชทบอทวัดพระธาตุไชยา"</p>
-        <p>คลิกที่ไอคอนแชทมุมขวาล่างเพื่อเริ่มสนทนาได้เลยครับ/ค่ะ</p>
+    <div id="content-wrapper">
+        <div id="nong-srivi-model"></div>
+        <h1>น้องศรีวิ ยินดีต้อนรับ</h1>
+        <p>มัคคุเทศก์ AI แห่งวัดพระธาตุไชยา พร้อมให้บริการครับ/ค่ะ</p>
+        <button id="start-chat-button">เริ่มสนทนา</button>
     </div>
     <script src="https://www.gstatic.com/dialogflow-console/fast/messenger/bootstrap.js?v=1"></script>
     <df-messenger
       intent="WELCOME"
-      chat-title="Wat-Phra-That-Chatbot"
+      chat-title="น้องศรีวิ (AI Guide)"
       agent-id="2f3ad8d0-abd6-49dd-a7ac-ad9024c74e62"
       language-code="th"
     ></df-messenger>
-    </body>
-</html>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const dfMessenger = document.querySelector('df-messenger');
+            const startButton = document.getElementById('start-chat-button');
+            const contentWrapper = document.getElementById('content-wrapper');
+            const chatWrapper = dfMessenger.shadowRoot.querySelector('df-messenger-chat-wrapper');
+
+            // 1. เมื่อกด "ปุ่มเริ่มสนทนา"
+            startButton.addEventListener('click', () => {
+                contentWrapper.style.opacity = '0'; // ซ่อน "น้องศรีวิ"
+                dfMessenger.open(); // เปิดแชท (ที่อยู่ตรงกลาง)
+            });
+
+            // 2. เมื่อ "ปิด" หน้าต่างแชท
+            dfMessenger.addEventListener('df-chat-closed', () => {
+                contentWrapper.style.opacity
