@@ -200,9 +200,12 @@
            --df-messenger-bot-message: #FFFFFF;
            --df-messenger-bot-message-font-color: #4C3F30;
            position: fixed;
-           bottom: 20px;
-           right: 20px;
+           top: 50%;
+           left: 50%;
+           transform: translate(-50%, -50%);
            z-index: 999;
+           width: 400px;
+           height: 600px;
            visibility: hidden;
            opacity: 0;
         }
@@ -210,6 +213,11 @@
         df-messenger.show {
            visibility: visible;
            opacity: 1;
+        }
+        
+        /* ปรับแต่งไอคอนแชทบอท */
+        df-messenger::part(chat-bubble-icon) {
+           display: none;
         }
     </style>
     </head>
