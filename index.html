@@ -9,7 +9,7 @@
         html, body { height: 100%; margin: 0; padding: 0; font-family: Arial, sans-serif; overflow: hidden; }
         body { background: linear-gradient(180deg, #FAF3E0 0%, #FBF8E8 60%, #E0CA8F 100%); display: flex; align-items: center; justify-content: center; }
         
-        /* ----- 🍁 ส่วนของใบไม้ ----- */
+        /* ----- 🍁 ส่วนของใบไม้ (เหมือนเดิม) ----- */
         #leaf-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; overflow: hidden; pointer-events: none; }
         .leaf { position: absolute; top: -10%; z-index: 1; user-select: none; animation: falling-leaf 10s linear infinite; }
         @keyframes falling-leaf {
@@ -17,19 +17,31 @@
             100% { transform: translateY(120vh) rotate(720deg); opacity: 0; }
         }
 
-        /* ----- ⭐️ ส่วนของกล่องต้อนรับ (ที่คุณทำหายไป) ----- */
+        /* ----- ⭐️ (แก้ไขแล้ว!) ส่วนของกล่องต้อนรับ (ลบ backdrop-filter) ----- */
         #content-wrapper { 
-            text-align: center; color: #5C4033; background: rgba(255, 255, 255, 0.3); backdrop-filter: blur(10px); 
-            border-radius: 20px; padding: 40px; box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.1); 
-            transition: opacity 0.5s ease; z-index: 2; position: relative; 
+            text-align: center; 
+            color: #5C4033; 
+            
+            /* (แก้ไข!) ใช้พื้นหลังโปร่งแสงธรรมดา (ปลอดภัย 100%) */
+            background: rgba(255, 255, 255, 0.7); 
+            /* (ลบ!) backdrop-filter: blur(10px); (ตัวปัญหา) */
+            
+            border-radius: 20px; 
+            padding: 40px; 
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.1); 
+            transition: opacity 0.5s ease; 
+            z-index: 2; 
+            position: relative; 
         }
+        
+        /* (ส่วนที่เหลือเหมือนเดิม) */
         #nong-srivi-model { width: 150px; height: 150px; margin: 0 auto 20px auto; border-radius: 50%; background: linear-gradient(45deg, #D4AF37, #FFD700, #F0E68C, #D4AF37); background-size: 200% 200%; box-shadow: 0 10px 30px rgba(212, 175, 55, 0.5); animation: float 6s ease-in-out infinite, shine 4s ease-in-out infinite; }
         @keyframes float { 0% { transform: translateY(0px); } 50% { transform: translateY(-20px); } 100% { transform: translateY(0px); } }
         @keyframes shine { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
         #start-chat-button { background-color: #D4AF37; color: #5C4033; border: none; border-radius: 50px; padding: 15px 40px; font-size: 1.2em; font-weight: bold; cursor: pointer; box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1); transition: all 0.3s ease; }
         #start-chat-button:hover { transform: scale(1.05); box-shadow: 0 8px 20px rgba(212, 175, 55, 0.4); }
 
-        /* ----- 🎨 ตกแต่งสี Chatbot (ส่วนนี้ถูกต้อง) ----- */
+        /* ----- 🎨 ตกแต่งสี Chatbot (เหมือนเดิม) ----- */
         df-messenger {
            --df-messenger-header-background-color: #D4AF37;
            --df-messenger-header-font-color: #4C3F30;
@@ -57,7 +69,6 @@
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             
-            // --- (ส่วนเชื่อมปุ่มกด) ---
             const dfMessenger = document.querySelector('df-messenger');
             const startButton = document.getElementById('start-chat-button');
             const contentWrapper = document.getElementById('content-wrapper');
@@ -111,4 +122,22 @@
                         left: 50% !important;
                         transform: translate(-50%, -50%) !important;
                         z-index: 9999;
-                        width: 90% !importa
+                        width: 90% !important;
+                        max-width: 450px;
+                        height: 75vh !important;
+                        border-radius: 15px;
+                        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+                        opacity: 0;
+                        animation: fadeInChat 0.5s forwards;
+                    }
+                    @keyframes fadeInChat {
+                        from { opacity: 0; transform: translate(-50%, -45%); }
+                        to { opacity: 1; transform: translate(-50%, -50%); }
+                    }
+                `;
+                shadowRoot.appendChild(style);
+            });
+        });
+    </script>
+    </body>
+</html>
