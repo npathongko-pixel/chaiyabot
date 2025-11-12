@@ -15,66 +15,88 @@
             overflow: hidden; /* ป้องกันการเลื่อนหน้าจอ */
         }
 
-        /* ----- 🎨 พื้นหลังแบบอลังการ (ไล่สี) ----- */
+        /* ----- 🎨 พื้นหลัง (ไล่สีครีม-ทอง) ----- */
         body {
-            /* ไล่สีจากสีครีม (บน) ไปยังสีทองอ่อนๆ (ล่าง) */
             background: linear-gradient(180deg, #FAF3E0 0%, #FBF8E8 60%, #E0CA8F 100%);
             display: flex;
             align-items: center;
             justify-content: center;
         }
 
+        /* ----- 🍁 (ใหม่!) Container สำหรับใบไม้ ----- */
+        #leaf-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1; /* อยู่หน้าพื้นหลัง */
+            overflow: hidden;
+            pointer-events: none; /* ทำให้คลิกทะลุได้ */
+        }
+
+        /* ----- 🍁 (ใหม่!) สไตล์ของใบไม้แต่ละใบ ----- */
+        .leaf {
+            position: absolute;
+            top: -10%;
+            z-index: 1; 
+            user-select: none;
+            animation: falling-leaf 10s linear infinite;
+        }
+
+        /* ----- 🍁 (ใหม่!) Animation ใบไม้โปรย ----- */
+        @keyframes falling-leaf {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(120vh) rotate(720deg); /* ตกลงล่างจอ + หมุน 2 รอบ */
+                opacity: 0;
+            }
+        }
+
+
         /* ----- กล่องเนื้อหาหลัก (ที่อยู่ตรงกลาง) ----- */
         #content-wrapper {
             text-align: center;
             color: #5C4033; /* สีน้ำตาลเข้ม */
-            /* เพิ่มเอฟเฟกต์ "กระจกฝ้า" ให้ดูหรูหรา */
-            background: rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.3); /* กระจกฝ้า */
             backdrop-filter: blur(10px);
             border-radius: 20px;
             padding: 40px;
             box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.1);
-            transition: opacity 0.5s ease; /* เอฟเฟกต์ Fade */
+            transition: opacity 0.5s ease;
+            z-index: 2; /* ให้อยู่ "ทับ" ใบไม้ */
+            position: relative; /* จำเป็นสำหรับ z-index */
         }
 
-        /* ----- 🎨 โมเดล "น้องศรีวิชัย" ----- */
+        /* ... (โค้ด "น้องศรีวิ" และปุ่ม เหมือนเดิม) ... */
         #nong-srivi-model {
             width: 150px;
             height: 150px;
             margin: 0 auto 20px auto;
-            border-radius: 50%; /* วงกลม */
-            
-            /* ไล่สีทองอร่าม */
+            border-radius: 50%;
             background: linear-gradient(45deg, #D4AF37, #FFD700, #F0E68C, #D4AF37);
-            background-size: 200% 200%; /* สำหรับ Animation ไล่สี */
-            
-            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.5); /* เงาสีทอง */
-            
-            /* ----- 🎨 การเคลื่อนไหว ----- */
+            background-size: 200% 200%;
+            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.5);
             animation: 
-                float 6s ease-in-out infinite, /* ลอยขึ้นลง */
-                shine 4s ease-in-out infinite; /* ไล่สีไปมา */
+                float 6s ease-in-out infinite,
+                shine 4s ease-in-out infinite;
         }
-
-        /* Animation "ลอย" (Float) */
         @keyframes float {
             0% { transform: translateY(0px); }
             50% { transform: translateY(-20px); }
             100% { transform: translateY(0px); }
         }
-
-        /* Animation "ไล่สี" (Shine) */
         @keyframes shine {
             0% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
             100% { background-position: 0% 50%; }
         }
-
-
-        /* ----- 🎨 ปุ่มเริ่มแชท (ปุ่มอลังการ) ----- */
         #start-chat-button {
-            background-color: #D4AF37; /* สีทอง */
-            color: #5C4033; /* สีน้ำตาลเข้ม */
+            background-color: #D4AF37;
+            color: #5C4033;
             border: none;
             border-radius: 50px;
             padding: 15px 40px;
@@ -85,35 +107,30 @@
             transition: all 0.3s ease;
         }
         #start-chat-button:hover {
-            transform: scale(1.05); /* ขยายเมื่อชี้ */
+            transform: scale(1.05);
             box-shadow: 0 8px 20px rgba(212, 175, 55, 0.4);
         }
 
         
-        /* ----- 🎨 Hack: ย้าย Chatbot มาตรงกลาง! ----- */
-
-        /* 1. ซ่อนปุ่มแชทวงกลม (ของเดิม) ที่มุมล่างขวา */
+        /* ----- 🎨 Hack: ย้าย Chatbot มาตรงกลาง! (เหมือนเดิม) ----- */
         df-messenger {
-            --df-messenger-chat-background-color: transparent; /* ทำให้ปุ่มใส */
-            --df-messenger-chat-icon-color: transparent; /* ทำให้ไอคอนใส */
+            --df-messenger-chat-background-color: transparent;
+            --df-messenger-chat-icon-color: transparent;
         }
         
-        /* 2. บังคับ "หน้าต่างแชท" (ที่เปิดแล้ว) ให้อยู่ตรงกลางจอ */
         df-messenger-chat-wrapper.chat-open {
             position: fixed !important;
             top: 50% !important;
             left: 50% !important;
             transform: translate(-50%, -50%) !important;
-            
-            z-index: 9999;
+            z-index: 9999; /* อยู่ทับทุกอย่าง */
             width: 90% !important;
-            max-width: 450px; /* ขนาดหน้าต่างแชท */
-            height: 75vh !important; /* สูง 75% ของจอ */
-            
+            max-width: 450px;
+            height: 75vh !important;
             border-radius: 15px;
             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
-            opacity: 0; /* เริ่มต้นให้ใส (สำหรับ Fade in) */
-            animation: fadeInChat 0.5s forwards; /* เอฟเฟกต์ Fade in */
+            opacity: 0;
+            animation: fadeInChat 0.5s forwards;
         }
 
         @keyframes fadeInChat {
@@ -121,13 +138,10 @@
             to { opacity: 1; transform: translate(-50%, -50%); }
         }
 
-        /* ----- 🎨 ตกแต่งสี Chatbot (ให้เข้าธีม) ----- */
+        /* ----- 🎨 ตกแต่งสี Chatbot (เหมือนเดิม) ----- */
         df-messenger {
-           /* ----- สี "หัวข้อ" (Header) ----- */
-           --df-messenger-header-background-color: #D4AF37; /* สีทอง */
-           --df-messenger-header-font-color: #4C3F30; /* สีน้ำตาลเข้ม */
-
-           /* ----- สี "ข้อความของเรา" ----- */
+           --df-messenger-header-background-color: #D4AF37;
+           --df-messenger-header-font-color: #4C3F30;
            --df-messenger-user-message-background-color: #D4AF37;
            --df-messenger-user-message-font-color: #4C3F30;
         }
@@ -136,10 +150,11 @@
     </head>
 <body>
 
+    <div id="leaf-container"></div>
     <div id="content-wrapper">
         <div id="nong-srivi-model"></div>
         <h1>น้องศรีวิ ยินดีต้อนรับ</h1>
-        <p>มัคคุเทศก์ AI แห่งวัดพระธาตุไชยา พร้อมให้บริการครับ/ค่ะ</p>
+        <p>มัคคุเทศก์ AI แห่งวัดพระธาตุไชยา พร้อมให้บริการค่ะ</p>
         <button id="start-chat-button">เริ่มสนทนา</button>
     </div>
     <script src="https://www.gstatic.com/dialogflow-console/fast/messenger/bootstrap.js?v=1"></script>
@@ -151,27 +166,49 @@
     ></df-messenger>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
+            
+            // --- (ส่วนเชื่อมปุ่มกด - เหมือนเดิม) ---
             const dfMessenger = document.querySelector('df-messenger');
             const startButton = document.getElementById('start-chat-button');
             const contentWrapper = document.getElementById('content-wrapper');
-            
-            /* * บรรทัดนี้สำคัญมาก! 
-             * มันคือการ "ค้นหา" หน้าต่างแชทที่ซ่อนอยู่ (ใน Shadow DOM)
-             */
             const chatWrapper = dfMessenger.shadowRoot.querySelector('df-messenger-chat-wrapper');
 
-            // 1. เมื่อกด "ปุ่มเริ่มสนทนา"
             startButton.addEventListener('click', () => {
-                contentWrapper.style.opacity = '0'; // ซ่อน "น้องศรีวิ"
-                contentWrapper.style.pointerEvents = 'none'; // ปิดการใช้งานปุ่ม (กันกดย้ำ)
-                dfMessenger.open(); // เปิดแชท (ที่อยู่ตรงกลาง)
+                contentWrapper.style.opacity = '0';
+                contentWrapper.style.pointerEvents = 'none';
+                dfMessenger.open();
             });
 
-            // 2. เมื่อ "ปิด" หน้าต่างแชท
             dfMessenger.addEventListener('df-chat-closed', () => {
-                contentWrapper.style.opacity = '1'; // โชว์ "น้องศรีวิ" กลับมา
-                contentWrapper.style.pointerEvents = 'auto'; // เปิดการใช้งานปุ่ม
+                contentWrapper.style.opacity = '1';
+                contentWrapper.style.pointerEvents = 'auto';
             });
+
+            
+            // --- 🍁 (ใหม่!) ฟังก์ชันสร้างใบไม้โปรย ---
+            function createLeaves() {
+                const container = document.getElementById('leaf-container');
+                const leafCount = 30; // จำนวนใบไม้ (ปรับได้ตามชอบ)
+                const colors = ['#D95B00', '#E25822', '#C34A2C', '#FF4500', '#DAA520']; // สีส้ม, แดง, ทอง
+
+                for (let i = 0; i < leafCount; i++) {
+                    let leaf = document.createElement('span');
+                    leaf.className = 'leaf';
+                    leaf.innerHTML = '🍁'; // อิโมจิใบเมเปิ้ล (สีส้ม/แดง อยู่แล้ว)
+                    
+                    // --- Random ค่าต่างๆ ให้ดูธรรมชาติ ---
+                    leaf.style.left = Math.random() * 100 + 'vw'; // สุ่มตำแหน่งแนวนอน
+                    leaf.style.animationDuration = (Math.random() * 5) + 5 + 's'; // สุ่มความเร็ว (5-10 วินาที)
+                    leaf.style.animationDelay = Math.random() * 5 + 's'; // สุ่มเวลาเริ่ม (0-5 วินาที)
+                    leaf.style.fontSize = (Math.random() * 1) + 1 + 'em'; // สุ่มขนาด (1em - 2em)
+                    leaf.style.color = colors[Math.floor(Math.random() * colors.length)]; // สุ่มสี
+                    
+                    container.appendChild(leaf);
+                }
+            }
+
+            // สั่งให้เริ่มสร้างใบไม้!
+            createLeaves();
         });
     </script>
     </body>
