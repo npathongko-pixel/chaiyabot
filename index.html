@@ -154,14 +154,25 @@
             const dfMessenger = document.querySelector('df-messenger');
             const startButton = document.getElementById('start-chat-button');
             const contentWrapper = document.getElementById('content-wrapper');
+            
+            /* * บรรทัดนี้สำคัญมาก! 
+             * มันคือการ "ค้นหา" หน้าต่างแชทที่ซ่อนอยู่ (ใน Shadow DOM)
+             */
             const chatWrapper = dfMessenger.shadowRoot.querySelector('df-messenger-chat-wrapper');
 
             // 1. เมื่อกด "ปุ่มเริ่มสนทนา"
             startButton.addEventListener('click', () => {
                 contentWrapper.style.opacity = '0'; // ซ่อน "น้องศรีวิ"
+                contentWrapper.style.pointerEvents = 'none'; // ปิดการใช้งานปุ่ม (กันกดย้ำ)
                 dfMessenger.open(); // เปิดแชท (ที่อยู่ตรงกลาง)
             });
 
             // 2. เมื่อ "ปิด" หน้าต่างแชท
             dfMessenger.addEventListener('df-chat-closed', () => {
-                contentWrapper.style.opacity
+                contentWrapper.style.opacity = '1'; // โชว์ "น้องศรีวิ" กลับมา
+                contentWrapper.style.pointerEvents = 'auto'; // เปิดการใช้งานปุ่ม
+            });
+        });
+    </script>
+    </body>
+</html>
