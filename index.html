@@ -17,7 +17,7 @@
             100% { transform: translateY(120vh) rotate(720deg); opacity: 0; }
         }
 
-        /* ----- ⭐️ ส่วนของกล่องต้อนรับ (ส่วนนี้สำคัญมาก ห้ามลบ!) ----- */
+        /* ----- ⭐️ ส่วนของกล่องต้อนรับ (ที่คุณทำหายไป) ----- */
         #content-wrapper { 
             text-align: center; color: #5C4033; background: rgba(255, 255, 255, 0.3); backdrop-filter: blur(10px); 
             border-radius: 20px; padding: 40px; box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.1); 
@@ -102,34 +102,13 @@
                 const shadowRoot = dfMessenger.shadowRoot;
                 const style = document.createElement('style');
                 style.textContent = `
-                    /* 1. ซ่อนปุ่มสีส้ม (มุมล่างขวา) ทิ้งไปเลย! */
                     button#widgetIcon {
                         display: none !important;
                     }
-                    
-                    /* 2. บังคับ "หน้าต่างแชท" (ที่เปิดแล้ว) ให้อยู่ตรงกลางจอ */
                     div.chat-wrapper.chat-open {
                         position: fixed !important;
                         top: 50% !important;
                         left: 50% !important;
                         transform: translate(-50%, -50%) !important;
                         z-index: 9999;
-                        width: 90% !important;
-                        max-width: 450px;
-                        height: 75vh !important;
-                        border-radius: 15px;
-                        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
-                        opacity: 0;
-                        animation: fadeInChat 0.5s forwards;
-                    }
-                    @keyframes fadeInChat {
-                        from { opacity: 0; transform: translate(-50%, -45%); }
-                        to { opacity: 1; transform: translate(-50%, -50%); }
-                    }
-                `;
-                shadowRoot.appendChild(style);
-            });
-        });
-    </script>
-    </body>
-</html>
+                        width: 90% !importa
