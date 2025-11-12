@@ -279,6 +279,22 @@
                 setTimeout(() => {
                     dfMessenger.classList.add('show');
                     console.log('แสดงแชทบอทแล้ว');
+                    
+                    // พยายามเปลี่ยนไอคอนเป็นน้องศรีวิ
+                    setTimeout(() => {
+                        try {
+                            const shadowRoot = dfMessenger.shadowRoot;
+                            if (shadowRoot) {
+                                const iconElement = shadowRoot.querySelector('.chat-bubble-icon, .icon-button, df-messenger-chat-bubble');
+                                if (iconElement) {
+                                    iconElement.innerHTML = '👧';
+                                    iconElement.style.fontSize = '32px';
+                                }
+                            }
+                        } catch (e) {
+                            console.log('ไม่สามารถเปลี่ยนไอคอนได้');
+                        }
+                    }, 1000);
                 }, 500);
             });
             
