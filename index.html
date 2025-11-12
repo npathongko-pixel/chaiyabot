@@ -1,7 +1,66 @@
-<script src="https://www.gstatic.com/dialogflow-console/fast/messenger/bootstrap.js?v=1"></script>
-<df-messenger
-  intent="WELCOME"
-  chat-title="Wat-Phra-That-Chatbot"
-  agent-id="2f3ad8d0-abd6-49dd-a7ac-ad9024c74e62"
-  language-code="th"
-></df-messenger>
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>แชทบอทวัดพระธาตุไชยา</title>
+
+    <style>
+        /* ตั้งค่าฟอนต์และพื้นหลังของหน้าเว็บ */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            /* ----- 🎨 สีพื้นหลัง (สีครีมอ่อน) ----- */
+            background-color: #FAF3E0; 
+        }
+
+        /* จัดสไตล์กล่องข้อความต้อนรับ */
+        .welcome-container {
+            text-align: center;
+            padding: 50px 20px;
+            color: #5C4033; /* สีน้ำตาลเข้ม */
+        }
+        .welcome-container h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        .welcome-container p {
+            font-size: 1.2em;
+        }
+
+        /* ----- 🎨 ตกแต่งหน้าต่าง Chatbot ----- */
+        df-messenger {
+           /* ----- สี "หัวข้อ" (Header) ----- */
+           --df-messenger-header-background-color: #D4AF37; /* สีทอง */
+           --df-messenger-header-font-color: #4C3F30; /* สีน้ำตาลเข้ม */
+
+           /* ----- สี "ข้อความของ AI" ----- */
+           --df-messenger-bot-message-background-color: #F8F8F8; /* สีเทาอ่อน */
+           --df-messenger-bot-message-font-color: #000000;
+
+           /* ----- สี "ข้อความของเรา" ----- */
+           --df-messenger-user-message-background-color: #D4AF37; /* สีทอง */
+           --df-messenger-user-message-font-color: #4C3F30;
+           
+           /* ----- สี "ไอคอนปุ่มแชท" (มุมขวาล่าง) ----- */
+           --df-messenger-chat-background-color: #D4AF37; /* สีทอง */
+        }
+    </style>
+    </head>
+<body>
+
+    <div class="welcome-container">
+        <h1>ยินดีต้อนรับ</h1>
+        <p>สู่ "สื่อประชาสัมพันธ์อัจฉริยะ: แชทบอทวัดพระธาตุไชยา"</p>
+        <p>คลิกที่ไอคอนแชทมุมขวาล่างเพื่อเริ่มสนทนาได้เลยครับ/ค่ะ</p>
+    </div>
+    <script src="https://www.gstatic.com/dialogflow-console/fast/messenger/bootstrap.js?v=1"></script>
+    <df-messenger
+      intent="WELCOME"
+      chat-title="Wat-Phra-That-Chatbot"
+      agent-id="2f3ad8d0-abd6-49dd-a7ac-ad9024c74e62"
+      language-code="th"
+    ></df-messenger>
+    </body>
+</html>
