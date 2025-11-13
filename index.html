@@ -34,6 +34,16 @@
         }
         
         #video-section {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 3;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            max-width: 400px;
+            transition: all 0.5s ease;
             animation: slideInRight 0.8s ease-out;
         }
         
@@ -235,11 +245,18 @@
            height: 600px;
            visibility: hidden;
            opacity: 0;
+           pointer-events: none;
         }
         
         df-messenger.show {
            visibility: visible;
            opacity: 1;
+           pointer-events: all;
+        }
+        
+        /* ซ่อนปุ่มเดิมของ Dialogflow */
+        df-messenger::part(chat-bubble) {
+           display: none !important;
         }
         
         /* รองรับรูปภาพในแชท */
@@ -266,18 +283,161 @@
            border: none;
         }
         
-        /* ปรับแต่งไอคอนแชทบอท */
-        df-messenger::part(chat-bubble-icon) {
+        /* ปุ่มแชทสไตล์วัด */
+        #custom-chat-button {
+           position: fixed;
+           bottom: 30px;
+           right: 30px;
+           width: 80px;
+           height: 80px;
+           border-radius: 50%;
+           background: linear-gradient(135deg, #D4AF37, #FFD700, #F0E68C);
+           background-size: 200% 200%;
+           box-shadow: 0 8px 25px rgba(212, 175, 55, 0.6), 0 0 0 0 rgba(212, 175, 55, 0.4);
+           cursor: pointer;
            display: none;
+           align-items: center;
+           justify-content: center;
+           transition: all 0.3s ease;
+           z-index: 998;
+           animation: shine 3s ease-in-out infinite, pulse 2s infinite;
+           border: 4px solid #8B6914;
+        }
+        
+        #custom-chat-button.show {
+           display: flex;
+        }
+        
+        #custom-chat-button:hover {
+           transform: scale(1.1) rotate(5deg);
+           box-shadow: 0 12px 35px rgba(212, 175, 55, 0.8), 0 0 0 8px rgba(212, 175, 55, 0.2);
+        }
+        
+        #custom-chat-button:active {
+           transform: scale(0.95);
+        }
+        
+        @keyframes shine {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        @keyframes pulse {
+           0%, 100% {
+              box-shadow: 0 8px 25px rgba(212, 175, 55, 0.6), 0 0 0 0 rgba(212, 175, 55, 0.4);
+           }
+           50% {
+              box-shadow: 0 8px 25px rgba(212, 175, 55, 0.6), 0 0 0 15px rgba(212, 175, 55, 0);
+           }
+        }
+        
+        /* ไอคอนน้องศรีวิในปุ่ม */
+        .chat-button-character {
+           width: 50px;
+           height: 50px;
+           position: relative;
+        }
+        
+        .chat-button-body {
+           width: 30px;
+           height: 35px;
+           background: linear-gradient(135deg, #FFE4B5, #FFDAB9);
+           border-radius: 50% 50% 60% 60%;
+           position: absolute;
+           top: 50%;
+           left: 50%;
+           transform: translate(-50%, -40%);
+           box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+        }
+        
+        .chat-button-head {
+           width: 28px;
+           height: 28px;
+           background: linear-gradient(135deg, #FFE4B5, #FFDAB9);
+           border-radius: 50%;
+           position: absolute;
+           top: 2px;
+           left: 50%;
+           transform: translateX(-50%);
+        }
+        
+        .chat-button-eye {
+           width: 4px;
+           height: 4px;
+           background: #2C1810;
+           border-radius: 50%;
+           position: absolute;
+           top: 10px;
+        }
+        
+        .chat-button-eye.left { left: 8px; }
+        .chat-button-eye.right { right: 8px; }
+        
+        .chat-button-smile {
+           width: 10px;
+           height: 5px;
+           border: 2px solid #2C1810;
+           border-top: none;
+           border-radius: 0 0 10px 10px;
+           position: absolute;
+           top: 16px;
+           left: 50%;
+           transform: translateX(-50%);
+        }
+        
+        .chat-button-hand {
+           position: absolute;
+           font-size: 18px;
+           animation: wave-hand 1s ease-in-out infinite;
+        }
+        
+        @keyframes wave-hand {
+           0%, 100% { transform: rotate(0deg); }
+           25% { transform: rotate(-20deg); }
+           75% { transform: rotate(20deg); }
+        }
+        
+        /* ข้อความเด้งๆ */
+        .chat-tooltip {
+           position: absolute;
+           bottom: 100%;
+           right: 0;
+           background: white;
+           color: #5C4033;
+           padding: 10px 15px;
+           border-radius: 15px;
+           margin-bottom: 10px;
+           box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+           white-space: nowrap;
+           font-size: 14px;
+           font-weight: bold;
+           opacity: 0;
+           animation: bounce-tooltip 3s ease-in-out infinite;
+           border: 2px solid #D4AF37;
+        }
+        
+        @keyframes bounce-tooltip {
+           0%, 100% { opacity: 0; transform: translateY(10px); }
+           10%, 90% { opacity: 1; transform: translateY(0); }
+        }
+        
+        .chat-tooltip::after {
+           content: '';
+           position: absolute;
+           top: 100%;
+           right: 20px;
+           border: 8px solid transparent;
+           border-top-color: white;
         }
     </style>
-    </head>
+</head>
 <body>
 
     <div id="leaf-container"></div>
     
     <!-- วิดีโอแนะนำวัด -->
-    <div id="video-section" style="position: fixed; top: 20px; right: 20px; z-index: 3; background: rgba(255, 255, 255, 0.95); border-radius: 20px; padding: 20px; box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2); max-width: 400px; transition: all 0.5s ease;">
+    <div id="video-section">
         <h3 style="color: #5C4033; margin: 0 0 15px 0; font-size: 1.1em; text-align: center; border-bottom: 3px solid #D4AF37; padding-bottom: 10px;">
             🎬 วิดีโอแนะนำวัดพระธาตุไชยา
         </h3>
@@ -324,70 +484,95 @@
     
     <script src="https://www.gstatic.com/dialogflow-console/fast/messenger/bootstrap.js?v=1"></script>
     <df-messenger
-      intent="WELCOME"
       chat-title="น้องศรีวิ (AI Guide)"
       agent-id="2f3ad8d0-abd6-49dd-a7ac-ad9024c74e62"
       language-code="th"
     ></df-messenger>
     
+    <!-- ปุ่มแชทสไตล์วัด -->
+    <div id="custom-chat-button">
+        <div class="chat-tooltip">💬 คุยกับน้องศรีวิ</div>
+        <div class="chat-button-character">
+            <div class="chat-button-body"></div>
+            <div class="chat-button-head">
+                <div class="chat-button-eye left"></div>
+                <div class="chat-button-eye right"></div>
+                <div class="chat-button-smile"></div>
+            </div>
+            <div class="chat-button-hand" style="top: 5px; right: -5px;">👋</div>
+        </div>
+    </div>
+    
     <script>
-        window.addEventListener('load', () => {
-            console.log('หน้าเว็บโหลดเสร็จแล้ว');
+        // รอให้ DOM โหลดเสร็จก่อน
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('✅ DOM โหลดเสร็จแล้ว');
             
-            const startButton = document.getElementById('start-chat-button');
-            const contentWrapper = document.getElementById('content-wrapper');
-            const dfMessenger = document.querySelector('df-messenger');
-            const customChatButton = document.getElementById('custom-chat-button');
+            // รอเพิ่มอีกนิดให้แน่ใจว่าทุกอย่างพร้อม
+            setTimeout(function() {
+                const startButton = document.getElementById('start-chat-button');
+                const contentWrapper = document.getElementById('content-wrapper');
+                const dfMessenger = document.querySelector('df-messenger');
+                const customChatButton = document.getElementById('custom-chat-button');
 
-            console.log('startButton:', startButton);
-            console.log('contentWrapper:', contentWrapper);
-            console.log('dfMessenger:', dfMessenger);
-            console.log('customChatButton:', customChatButton);
+                console.log('ตรวจสอบองค์ประกอบ:');
+                console.log('- startButton:', startButton ? '✅ พบ' : '❌ ไม่พบ');
+                console.log('- contentWrapper:', contentWrapper ? '✅ พบ' : '❌ ไม่พบ');
+                console.log('- dfMessenger:', dfMessenger ? '✅ พบ' : '❌ ไม่พบ');
+                console.log('- customChatButton:', customChatButton ? '✅ พบ' : '❌ ไม่พบ');
 
-            if (!startButton || !contentWrapper || !dfMessenger || !customChatButton) {
-                console.error("Error: ไม่สามารถโหลดองค์ประกอบหน้าเว็บได้");
-                return;
-            }
-
-            // กดปุ่มเริ่มสนทนา - ซ่อนหน้าต้อนรับและแสดงปุ่มแชท
-            startButton.addEventListener('click', () => {
-                console.log('✅ กดปุ่มเริ่มสนทนาแล้ว');
-                contentWrapper.classList.add('hidden');
-                
-                setTimeout(() => {
-                    customChatButton.classList.add('show');
-                    console.log('✅ แสดงปุ่มแชทแล้ว');
-                }, 500);
-            });
-            
-            // กดปุ่มแชท - เปิดหน้าต่างแชทบอท
-            customChatButton.addEventListener('click', () => {
-                console.log('✅ กดปุ่มแชท');
-                dfMessenger.classList.add('show');
-                customChatButton.style.display = 'none';
-            });
-            
-            function createLeaves() {
-                const container = document.getElementById('leaf-container');
-                if (!container) return;
-                
-                const leafCount = 30;
-                const colors = ['#D95B00', '#E25822', '#C34A2C', '#FF4500', '#DAA520'];
-
-                for (let i = 0; i < leafCount; i++) {
-                    let leaf = document.createElement('span');
-                    leaf.className = 'leaf';
-                    leaf.innerHTML = '🍁';
-                    leaf.style.left = Math.random() * 100 + 'vw';
-                    leaf.style.animationDuration = (Math.random() * 5) + 5 + 's';
-                    leaf.style.animationDelay = Math.random() * 5 + 's';
-                    leaf.style.fontSize = (Math.random() * 1) + 1 + 'em';
-                    leaf.style.color = colors[Math.floor(Math.random() * colors.length)];
-                    container.appendChild(leaf);
+                if (startButton && contentWrapper && customChatButton) {
+                    // กดปุ่มเริ่มสนทนา
+                    startButton.addEventListener('click', function() {
+                        console.log('🎯 กดปุ่มเริ่มสนทนา');
+                        contentWrapper.classList.add('hidden');
+                        
+                        setTimeout(function() {
+                            customChatButton.classList.add('show');
+                            console.log('✅ แสดงปุ่มแชทแล้ว');
+                        }, 500);
+                    });
+                    
+                    // กดปุ่มแชท
+                    customChatButton.addEventListener('click', function() {
+                        console.log('🎯 กดปุ่มแชท');
+                        if (dfMessenger) {
+                            dfMessenger.classList.add('show');
+                            customChatButton.style.display = 'none';
+                            console.log('✅ เปิดแชทบอทแล้ว');
+                        }
+                    });
+                    
+                    console.log('✅ ติดตั้ง Event Listeners สำเร็จ');
+                } else {
+                    console.error('❌ Error: ไม่พบองค์ประกอบบางอย่าง');
                 }
-            }
-            createLeaves();
+                
+                // สร้างใบไม้ร่วง
+                createLeaves();
+            }, 100);
         });
+        
+        function createLeaves() {
+            const container = document.getElementById('leaf-container');
+            if (!container) return;
+            
+            const leafCount = 30;
+            const colors = ['#D95B00', '#E25822', '#C34A2C', '#FF4500', '#DAA520'];
+
+            for (let i = 0; i < leafCount; i++) {
+                let leaf = document.createElement('span');
+                leaf.className = 'leaf';
+                leaf.innerHTML = '🍁';
+                leaf.style.left = Math.random() * 100 + 'vw';
+                leaf.style.animationDuration = (Math.random() * 5) + 5 + 's';
+                leaf.style.animationDelay = Math.random() * 5 + 's';
+                leaf.style.fontSize = (Math.random() * 1) + 1 + 'em';
+                leaf.style.color = colors[Math.floor(Math.random() * colors.length)];
+                container.appendChild(leaf);
+            }
+            console.log('✅ สร้างใบไม้ร่วงเสร็จแล้ว');
+        }
     </script>
-    </body>
+</body>
 </html>
