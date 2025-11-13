@@ -336,36 +336,28 @@
             const startButton = document.getElementById('start-chat-button');
             const contentWrapper = document.getElementById('content-wrapper');
             const dfMessenger = document.querySelector('df-messenger');
+            const customChatButton = document.getElementById('custom-chat-button');
 
-            if (!startButton || !contentWrapper || !dfMessenger) {
+            if (!startButton || !contentWrapper || !dfMessenger || !customChatButton) {
                 console.error("Error: ไม่สามารถโหลดองค์ประกอบหน้าเว็บได้");
                 return;
             }
 
+            // กดปุ่มเริ่มสนทนา - ซ่อนหน้าต้อนรับและแสดงปุ่มแชท
             startButton.addEventListener('click', () => {
                 console.log('กดปุ่มเริ่มสนทนา');
                 contentWrapper.classList.add('hidden');
                 
                 setTimeout(() => {
-                    dfMessenger.classList.add('show');
-                    console.log('แสดงแชทบอทแล้ว');
-                    
-                    // พยายามเปลี่ยนไอคอนเป็นน้องศรีวิ
-                    setTimeout(() => {
-                        try {
-                            const shadowRoot = dfMessenger.shadowRoot;
-                            if (shadowRoot) {
-                                const iconElement = shadowRoot.querySelector('.chat-bubble-icon, .icon-button, df-messenger-chat-bubble');
-                                if (iconElement) {
-                                    iconElement.innerHTML = '👧';
-                                    iconElement.style.fontSize = '32px';
-                                }
-                            }
-                        } catch (e) {
-                            console.log('ไม่สามารถเปลี่ยนไอคอนได้');
-                        }
-                    }, 1000);
+                    customChatButton.classList.add('show');
                 }, 500);
+            });
+            
+            // กดปุ่มแชท - เปิดหน้าต่างแชทบอท
+            customChatButton.addEventListener('click', () => {
+                console.log('กดปุ่มแชท');
+                dfMessenger.classList.add('show');
+                customChatButton.style.display = 'none';
             });
             
             function createLeaves() {
