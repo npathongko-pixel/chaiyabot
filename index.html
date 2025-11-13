@@ -331,12 +331,18 @@
     ></df-messenger>
     
     <script>
-        window.onload = () => {
+        window.addEventListener('load', () => {
+            console.log('หน้าเว็บโหลดเสร็จแล้ว');
             
             const startButton = document.getElementById('start-chat-button');
             const contentWrapper = document.getElementById('content-wrapper');
             const dfMessenger = document.querySelector('df-messenger');
             const customChatButton = document.getElementById('custom-chat-button');
+
+            console.log('startButton:', startButton);
+            console.log('contentWrapper:', contentWrapper);
+            console.log('dfMessenger:', dfMessenger);
+            console.log('customChatButton:', customChatButton);
 
             if (!startButton || !contentWrapper || !dfMessenger || !customChatButton) {
                 console.error("Error: ไม่สามารถโหลดองค์ประกอบหน้าเว็บได้");
@@ -345,17 +351,18 @@
 
             // กดปุ่มเริ่มสนทนา - ซ่อนหน้าต้อนรับและแสดงปุ่มแชท
             startButton.addEventListener('click', () => {
-                console.log('กดปุ่มเริ่มสนทนา');
+                console.log('✅ กดปุ่มเริ่มสนทนาแล้ว');
                 contentWrapper.classList.add('hidden');
                 
                 setTimeout(() => {
                     customChatButton.classList.add('show');
+                    console.log('✅ แสดงปุ่มแชทแล้ว');
                 }, 500);
             });
             
             // กดปุ่มแชท - เปิดหน้าต่างแชทบอท
             customChatButton.addEventListener('click', () => {
-                console.log('กดปุ่มแชท');
+                console.log('✅ กดปุ่มแชท');
                 dfMessenger.classList.add('show');
                 customChatButton.style.display = 'none';
             });
@@ -380,7 +387,7 @@
                 }
             }
             createLeaves();
-        };
+        });
     </script>
     </body>
 </html>
