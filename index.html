@@ -6,7 +6,8 @@
     <title>สื่ออัจฉริยะ: แชทบอทวัดพระธาตุไชยา</title>
 
     <style>
-        html, body { height: 100%; margin: 0; padding: 0; font-family: Arial, sans-serif; overflow: hidden; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body { height: 100%; font-family: Arial, sans-serif; overflow: hidden; }
         body { background: linear-gradient(180deg, #FAF3E0 0%, #FBF8E8 60%, #E0CA8F 100%); display: flex; align-items: center; justify-content: center; }
         
         #leaf-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; overflow: hidden; pointer-events: none; }
@@ -86,17 +87,10 @@
         }
         
         @keyframes slideInRight {
-            from {
-                opacity: 0;
-                transform: translateX(100px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
+            from { opacity: 0; transform: translateX(100px); }
+            to { opacity: 1; transform: translateX(0); }
         }
         
-        /* ปรับวิดีโอบนมือถือ */
         @media (max-width: 768px) {
             #video-section {
                 top: 10px;
@@ -264,61 +258,34 @@
             box-shadow: 0 8px 20px rgba(212, 175, 55, 0.4); 
         }
 
+        /* Dialogflow Messenger Styling */
         df-messenger {
            --df-messenger-header-background-color: #D4AF37;
            --df-messenger-header-font-color: #4C3F30;
            --df-messenger-user-message-background-color: #D4AF37;
            --df-messenger-user-message-font-color: #4C3F30;
            --df-messenger-chat-background-color: #FBF8E8;
-           --df-messenger-chat-icon-color: #4C3F30;
            --df-messenger-bot-message: #FFFFFF;
            --df-messenger-bot-message-font-color: #4C3F30;
+           --df-messenger-send-icon: #D4AF37;
            --df-messenger-font-family: 'Arial', sans-serif;
            position: fixed;
            top: 50%;
            left: 50%;
            transform: translate(-50%, -50%);
            z-index: 999;
-           width: 400px;
+           width: 90%;
+           max-width: 400px;
            height: 600px;
-           visibility: hidden;
+           max-height: 80vh;
            opacity: 0;
-           pointer-events: none;
+           visibility: hidden;
+           transition: opacity 0.3s ease, visibility 0.3s ease;
         }
         
         df-messenger.show {
-           visibility: visible;
            opacity: 1;
-           pointer-events: all;
-        }
-        
-        /* ซ่อนปุ่มเดิมของ Dialogflow */
-        df-messenger::part(chat-bubble) {
-           display: none !important;
-        }
-        
-        /* รองรับรูปภาพในแชท */
-        df-messenger img {
-           max-width: 100%;
-           height: auto;
-           border-radius: 8px;
-           margin: 8px 0;
-        }
-        
-        /* รองรับวิดีโอในแชท */
-        df-messenger video {
-           max-width: 100%;
-           height: auto;
-           border-radius: 8px;
-           margin: 8px 0;
-        }
-        
-        df-messenger iframe {
-           max-width: 100%;
-           height: 250px;
-           border-radius: 8px;
-           margin: 8px 0;
-           border: none;
+           visibility: visible;
         }
         
         /* ปุ่มแชทสไตล์วัด */
@@ -370,7 +337,6 @@
            }
         }
         
-        /* ไอคอนน้องศรีวิในปุ่ม */
         .chat-button-character {
            width: 50px;
            height: 50px;
@@ -436,7 +402,6 @@
            75% { transform: rotate(20deg); }
         }
         
-        /* ข้อความเด้งๆ */
         .chat-tooltip {
            position: absolute;
            bottom: 100%;
@@ -476,6 +441,7 @@
     
     <!-- วิดีโอแนะนำวัด -->
     <div id="video-section">
+        <button class="close-video-btn" id="close-video-btn" title="ปิดวิดีโอ">×</button>
         <h3 style="color: #5C4033; margin: 0 0 15px 0; font-size: 1.1em; text-align: center; border-bottom: 3px solid #D4AF37; padding-bottom: 10px;">
             🎬 วิดีโอแนะนำวัดพระธาตุไชยา
         </h3>
@@ -520,13 +486,6 @@
         <button id="start-chat-button">เริ่มสนทนา</button>
     </div>
     
-    <script src="https://www.gstatic.com/dialogflow-console/fast/messenger/bootstrap.js?v=1"></script>
-    <df-messenger
-      chat-title="น้องศรีวิ (AI Guide)"
-      agent-id="2f3ad8d0-abd6-49dd-a7ac-ad9024c74e62"
-      language-code="th"
-    ></df-messenger>
-    
     <!-- ปุ่มแชทสไตล์วัด -->
     <div id="custom-chat-button">
         <div class="chat-tooltip">💬 คุยกับน้องศรีวิ</div>
@@ -541,55 +500,77 @@
         </div>
     </div>
     
+    <script src="https://www.gstatic.com/dialogflow-console/fast/messenger/bootstrap.js?v=1"></script>
+    <df-messenger
+      chat-title="น้องศรีวิ (AI Guide)"
+      agent-id="2f3ad8d0-abd6-49dd-a7ac-ad9024c74e62"
+      language-code="th"
+    ></df-messenger>
+    
     <script>
-        // รอให้ DOM โหลดเสร็จก่อน
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log('✅ DOM โหลดเสร็จแล้ว');
+        // ใช้ setTimeout เพื่อให้แน่ใจว่า DOM โหลดเสร็จสมบูรณ์
+        setTimeout(function() {
+            console.log('🚀 เริ่มระบบ...');
             
-            // รอเพิ่มอีกนิดให้แน่ใจว่าทุกอย่างพร้อม
-            setTimeout(function() {
-                const startButton = document.getElementById('start-chat-button');
-                const contentWrapper = document.getElementById('content-wrapper');
-                const dfMessenger = document.querySelector('df-messenger');
-                const customChatButton = document.getElementById('custom-chat-button');
+            const startButton = document.getElementById('start-chat-button');
+            const contentWrapper = document.getElementById('content-wrapper');
+            const dfMessenger = document.querySelector('df-messenger');
+            const customChatButton = document.getElementById('custom-chat-button');
+            const videoSection = document.getElementById('video-section');
+            const closeVideoBtn = document.getElementById('close-video-btn');
 
-                console.log('ตรวจสอบองค์ประกอบ:');
-                console.log('- startButton:', startButton ? '✅ พบ' : '❌ ไม่พบ');
-                console.log('- contentWrapper:', contentWrapper ? '✅ พบ' : '❌ ไม่พบ');
-                console.log('- dfMessenger:', dfMessenger ? '✅ พบ' : '❌ ไม่พบ');
-                console.log('- customChatButton:', customChatButton ? '✅ พบ' : '❌ ไม่พบ');
+            console.log('📋 ตรวจสอบองค์ประกอบ:');
+            console.log('  startButton:', startButton ? '✅' : '❌');
+            console.log('  contentWrapper:', contentWrapper ? '✅' : '❌');
+            console.log('  dfMessenger:', dfMessenger ? '✅' : '❌');
+            console.log('  customChatButton:', customChatButton ? '✅' : '❌');
+            console.log('  videoSection:', videoSection ? '✅' : '❌');
+            console.log('  closeVideoBtn:', closeVideoBtn ? '✅' : '❌');
 
-                if (startButton && contentWrapper && customChatButton) {
-                    // กดปุ่มเริ่มสนทนา
-                    startButton.addEventListener('click', function() {
-                        console.log('🎯 กดปุ่มเริ่มสนทนา');
-                        contentWrapper.classList.add('hidden');
-                        
-                        setTimeout(function() {
-                            customChatButton.classList.add('show');
-                            console.log('✅ แสดงปุ่มแชทแล้ว');
-                        }, 500);
-                    });
+            // ปุ่มเริ่มสนทนา
+            if (startButton && contentWrapper && customChatButton) {
+                startButton.onclick = function() {
+                    console.log('🎯 กดปุ่มเริ่มสนทนา');
+                    contentWrapper.classList.add('hidden');
                     
-                    // กดปุ่มแชท
-                    customChatButton.addEventListener('click', function() {
-                        console.log('🎯 กดปุ่มแชท');
-                        if (dfMessenger) {
-                            dfMessenger.classList.add('show');
-                            customChatButton.style.display = 'none';
-                            console.log('✅ เปิดแชทบอทแล้ว');
-                        }
-                    });
-                    
-                    console.log('✅ ติดตั้ง Event Listeners สำเร็จ');
-                } else {
-                    console.error('❌ Error: ไม่พบองค์ประกอบบางอย่าง');
-                }
-                
-                // สร้างใบไม้ร่วง
-                createLeaves();
-            }, 100);
-        });
+                    setTimeout(function() {
+                        customChatButton.classList.add('show');
+                        console.log('✅ แสดงปุ่มแชทแล้ว');
+                    }, 500);
+                };
+                console.log('✅ ติดตั้งปุ่มเริ่มสนทนาสำเร็จ');
+            } else {
+                console.error('❌ ไม่พบองค์ประกอบสำหรับปุ่มเริ่มสนทนา');
+            }
+            
+            // ปุ่มเปิดแชท
+            if (customChatButton && dfMessenger) {
+                customChatButton.onclick = function() {
+                    console.log('🎯 กดปุ่มแชท');
+                    dfMessenger.classList.add('show');
+                    customChatButton.style.display = 'none';
+                    console.log('✅ เปิดแชทบอทแล้ว');
+                };
+                console.log('✅ ติดตั้งปุ่มแชทสำเร็จ');
+            } else {
+                console.error('❌ ไม่พบองค์ประกอบสำหรับปุ่มแชท');
+            }
+            
+            // ปุ่มปิดวิดีโอ
+            if (closeVideoBtn && videoSection) {
+                closeVideoBtn.onclick = function() {
+                    console.log('🎯 กดปิดวิดีโอ');
+                    videoSection.classList.add('hidden');
+                    console.log('✅ ปิดวิดีโอแล้ว');
+                };
+                console.log('✅ ติดตั้งปุ่มปิดวิดีโอสำเร็จ');
+            }
+            
+            // สร้างใบไม้ร่วง
+            createLeaves();
+            console.log('✅ ระบบพร้อมใช้งาน');
+            
+        }, 300);
         
         function createLeaves() {
             const container = document.getElementById('leaf-container');
@@ -609,7 +590,6 @@
                 leaf.style.color = colors[Math.floor(Math.random() * colors.length)];
                 container.appendChild(leaf);
             }
-            console.log('✅ สร้างใบไม้ร่วงเสร็จแล้ว');
         }
     </script>
 </body>
