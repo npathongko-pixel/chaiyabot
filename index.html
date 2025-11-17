@@ -269,23 +269,7 @@
            --df-messenger-bot-message-font-color: #4C3F30;
            --df-messenger-send-icon: #D4AF37;
            --df-messenger-font-family: 'Arial', sans-serif;
-           position: fixed;
-           top: 50%;
-           left: 50%;
-           transform: translate(-50%, -50%);
            z-index: 999;
-           width: 90%;
-           max-width: 400px;
-           height: 600px;
-           max-height: 80vh;
-           opacity: 0;
-           visibility: hidden;
-           transition: opacity 0.3s ease, visibility 0.3s ease;
-        }
-        
-        df-messenger.show {
-           opacity: 1;
-           visibility: visible;
         }
         
         /* ปุ่มแชทสไตล์วัด */
@@ -505,10 +489,15 @@
       chat-title="น้องศรีวิ (AI Guide)"
       agent-id="2f3ad8d0-abd6-49dd-a7ac-ad9024c74e62"
       language-code="th"
+      intent="WELCOME"
     ></df-messenger>
     
     <script>
-        // ใช้ setTimeout เพื่อให้แน่ใจว่า DOM โหลดเสร็จสมบูรณ์
+        // รอให้ Dialogflow Messenger โหลดเสร็จ
+        window.addEventListener('dfMessengerLoaded', function() {
+            console.log('✅ Dialogflow Messenger โหลดสำเร็จ');
+        });
+
         setTimeout(function() {
             console.log('🚀 เริ่มระบบ...');
             
@@ -524,8 +513,6 @@
             console.log('  contentWrapper:', contentWrapper ? '✅' : '❌');
             console.log('  dfMessenger:', dfMessenger ? '✅' : '❌');
             console.log('  customChatButton:', customChatButton ? '✅' : '❌');
-            console.log('  videoSection:', videoSection ? '✅' : '❌');
-            console.log('  closeVideoBtn:', closeVideoBtn ? '✅' : '❌');
 
             // ปุ่มเริ่มสนทนา
             if (startButton && contentWrapper && customChatButton) {
@@ -539,21 +526,35 @@
                     }, 500);
                 };
                 console.log('✅ ติดตั้งปุ่มเริ่มสนทนาสำเร็จ');
-            } else {
-                console.error('❌ ไม่พบองค์ประกอบสำหรับปุ่มเริ่มสนทนา');
             }
             
-            // ปุ่มเปิดแชท
+            // ปุ่มเปิดแชท - แก้ไขส่วนนี้
             if (customChatButton && dfMessenger) {
                 customChatButton.onclick = function() {
                     console.log('🎯 กดปุ่มแชท');
-                    dfMessenger.classList.add('show');
+                    
+                    // เปิด messenger widget
+                    if (dfMessenger.renderCustomText) {
+                        dfMessenger.renderCustomText('สวัสดีค่ะ');
+                    }
+                    
+                    // แสดง messenger และซ่อนปุ่ม
+                    const chatWindow = dfMessenger.shadowRoot?.querySelector('.chat-wrapper');
+                    if (chatWindow) {
+                        chatWindow.style.display = 'flex';
+                    }
+                    
                     customChatButton.style.display = 'none';
-                    console.log('✅ เปิดแชทบอทแล้ว');
+                    
+                    // ส่ง welcome event หลังจากเปิด chat สักครู่
+                    setTimeout(function() {
+                        if (dfMessenger.startNewSession) {
+                            dfMessenger.startNewSession();
+                        }
+                        console.log('✅ เปิดแชทบอทและส่ง welcome event แล้ว');
+                    }, 300);
                 };
                 console.log('✅ ติดตั้งปุ่มแชทสำเร็จ');
-            } else {
-                console.error('❌ ไม่พบองค์ประกอบสำหรับปุ่มแชท');
             }
             
             // ปุ่มปิดวิดีโอ
@@ -570,7 +571,7 @@
             createLeaves();
             console.log('✅ ระบบพร้อมใช้งาน');
             
-        }, 300);
+        }, 500);
         
         function createLeaves() {
             const container = document.getElementById('leaf-container');
