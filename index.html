@@ -1,58 +1,108 @@
- (cd "$(git rev-parse --show-toplevel)" && git apply --3way <<'EOF' 
-diff --git a/index.html b/index.html
-index c97601083d04c2e6f01f0bf297a1100dcd1d530b..1177b6583fc5f8abde246fb13dfd5441c7158c1b 100644
---- a/index.html
-+++ b/index.html
-@@ -1,36 +1,48 @@
- <!DOCTYPE html>
- <html lang="th">
- <head>
-     <meta charset="UTF-8">
-     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-     <title>สื่ออัจฉริยะ: แชทบอทวัดพระธาตุไชยา</title>
- 
-     <style>
-         * { margin: 0; padding: 0; box-sizing: border-box; }
-         html, body { height: 100%; font-family: Arial, sans-serif; overflow: hidden; }
--        body { background: linear-gradient(180deg, #FAF3E0 0%, #FBF8E8 60%, #E0CA8F 100%); display: flex; align-items: center; justify-content: center; }
-+        body {
-+            background:
-+                linear-gradient(180deg, rgba(250, 243, 224, 0.9) 0%, rgba(251, 248, 232, 0.82) 60%, rgba(224, 202, 143, 0.88) 100%),
-+                url('https://images.unsplash.com/photo-1501181180867-5f7f30b0e1c2?auto=format&fit=crop&w=1920&q=80');
-+            background-size: cover;
-+            background-position: center;
-+            background-attachment: fixed;
-+            background-repeat: no-repeat;
-+            background-blend-mode: overlay;
-+            display: flex;
-+            align-items: center;
-+            justify-content: center;
-+        }
-         
-         #leaf-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; overflow: hidden; pointer-events: none; }
-         .leaf { position: absolute; top: -10%; z-index: 1; user-select: none; animation: falling-leaf 10s linear infinite; }
-         @keyframes falling-leaf {
-             0% { transform: translateY(0) rotate(0deg); opacity: 1; }
-             100% { transform: translateY(120vh) rotate(720deg); opacity: 0; }
-         }
- 
-         #content-wrapper { 
-             text-align: center; color: #5C4033; 
-             background: rgba(255, 255, 255, 0.7);
-             border-radius: 20px; 
-             padding: 40px; 
-             box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.1); 
-             transition: opacity 0.5s ease, transform 0.5s ease;
-             z-index: 2; 
-             position: relative; 
-         }
-         
-         #content-wrapper.hidden {
-             opacity: 0;
-             pointer-events: none;
-             transform: scale(0.8);
-         }
-         
- 
-EOF
-)
+<style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { height: 100%; font-family: Arial, sans-serif; overflow: hidden; }
+
+    /* ✅ พื้นหลังเป็นรูปวัดพระธาตุไชยา + ไล่สีบางๆ ทับให้ตัวหนังสืออ่านง่าย */
+    body { 
+        background: 
+            linear-gradient(180deg, rgba(250,243,224,0.75) 0%, rgba(251,248,232,0.75) 60%, rgba(224,202,143,0.8) 100%),
+            url('wat-phra-that-chaiya.jpg') center/cover no-repeat fixed;
+        display: flex; 
+        align-items: center; 
+        justify-content: center; 
+    }
+    
+    #leaf-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; overflow: hidden; pointer-events: none; }
+    .leaf { position: absolute; top: -10%; z-index: 1; user-select: none; animation: falling-leaf 10s linear infinite; }
+    @keyframes falling-leaf {
+        0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+        100% { transform: translateY(120vh) rotate(720deg); opacity: 0; }
+    }
+
+    #content-wrapper { 
+        text-align: center; color: #5C4033; 
+        background: rgba(255, 255, 255, 0.7);
+        border-radius: 20px; 
+        padding: 40px; 
+        box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.1); 
+        transition: opacity 0.5s ease, transform 0.5s ease;
+        z-index: 2; 
+        position: relative; 
+    }
+    
+    #content-wrapper.hidden {
+        opacity: 0;
+        pointer-events: none;
+        transform: scale(0.8);
+    }
+    
+    #video-section {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 3;
+        background: rgba(255, 255, 255, 0.95);
+        border-radius: 20px;
+        padding: 20px;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+        max-width: 400px;
+        transition: all 0.5s ease;
+        animation: slideInRight 0.8s ease-out;
+    }
+    
+    #video-section.hidden {
+        opacity: 0;
+        transform: translateX(450px);
+        pointer-events: none;
+    }
+    
+    .close-video-btn {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        width: 35px;
+        height: 35px;
+        background: linear-gradient(135deg, #FF6B6B, #EE5A6F);
+        border: none;
+        border-radius: 50%;
+        color: white;
+        font-size: 20px;
+        font-weight: bold;
+        cursor: pointer;
+        box-shadow: 0 3px 10px rgba(255, 107, 107, 0.4);
+        transition: all 0.3s ease;
+        z-index: 10;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        line-height: 1;
+    }
+    
+    .close-video-btn:hover {
+        transform: rotate(90deg) scale(1.1);
+        box-shadow: 0 5px 15px rgba(255, 107, 107, 0.6);
+        background: linear-gradient(135deg, #EE5A6F, #FF6B6B);
+    }
+    
+    .close-video-btn:active {
+        transform: rotate(90deg) scale(0.95);
+    }
+    
+    @keyframes slideInRight {
+        from { opacity: 0; transform: translateX(100px); }
+        to { opacity: 1; transform: translateX(0); }
+    }
+    
+    @media (max-width: 768px) {
+        #video-section {
+            top: 10px;
+            right: 10px;
+            left: 10px;
+            max-width: none;
+            padding: 15px;
+        }
+    }
+    
+    #nong-srivi-model { 
+        width: 180px; 
+        height: 18
