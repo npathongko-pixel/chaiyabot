@@ -290,6 +290,29 @@
             --df-messenger-font-family: "Arial", sans-serif;
             z-index: 999;
         }
+
+        /* ✅ ปุ่มโลโก้วัดพระธาตุไชยา แทนปุ่มแชทเดิม */
+        #chaiya-logo-button {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            background-color: #ffffff;
+            background-image: url("chaiya-logo.svg");
+            background-size: 80%;
+            background-position: center;
+            background-repeat: no-repeat;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.35);
+            z-index: 1100;
+            cursor: pointer;
+            border: 3px solid rgba(255,255,255,0.9);
+        }
+        #chaiya-logo-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 24px rgba(0,0,0,0.45);
+        }
     </style>
 </head>
 <body>
@@ -347,6 +370,9 @@
         </div>
     </div>
 
+    <!-- ปุ่มโลโก้เปิดแชท -->
+    <div id="chaiya-logo-button" title="คุยกับน้องศรีวิ"></div>
+
     <!-- Dialogflow Messenger -->
     <script src="https://www.gstatic.com/dialogflow-console/fast/messenger/bootstrap.js?v=1"></script>
     <df-messenger
@@ -389,8 +415,52 @@
             }
         }
 
+        // เมื่อ df-messenger โหลดเสร็จ
         window.addEventListener("dfMessengerLoaded", function () {
             console.log("✅ Dialogflow Messenger โหลดสำเร็จ");
+
+            const dfMessenger = document.querySelector('df-messenger');
+            const logoBtn = document.getElementById('chaiya-logo-button');
+
+            function styleChat() {
+                if (!dfMessenger || !dfMessenger.shadowRoot) return;
+                const shadow = dfMessenger.shadowRoot;
+
+                // ซ่อนปุ่มลอยเดิมของ Dialogflow
+                const floatBtn = shadow.querySelector('df-floating-button');
+                if (floatBtn) {
+                    floatBtn.style.display = 'none';
+                }
+
+                // ✅ พื้นหลังหน้าต่างแชท + ลายไทย
+                const chatWrapper = shadow.querySelector('.chat-wrapper');
+                if (chatWrapper) {
+                    chatWrapper.style.backgroundImage = "url('thai-pattern.png')";
+                    chatWrapper.style.backgroundSize = "cover";
+                    chatWrapper.style.backgroundRepeat = "repeat";
+                    chatWrapper.style.backgroundColor = "transparent";
+                }
+
+                // ✅ bubble ต้อนรับ/proactive (ถ้ามี)
+                const tooltip = shadow.querySelector('.df-messenger-tooltip, .df-tooltip');
+                if (tooltip) {
+                    tooltip.style.backgroundImage = "url('thai-pattern.png')";
+                    tooltip.style.backgroundSize = "cover";
+                    tooltip.style.backgroundRepeat = "repeat";
+                }
+            }
+
+            styleChat();
+
+            // คลิกโลโก้ -> เปิด/ปิดแชท
+            if (logoBtn) {
+                logoBtn.addEventListener('click', function () {
+                    if (!dfMessenger || !dfMessenger.shadowRoot) return;
+                    const shadow = dfMessenger.shadowRoot;
+                    const floatBtn = shadow.querySelector('df-floating-button') || shadow.querySelector('button');
+                    if (floatBtn) floatBtn.click();
+                });
+            }
         });
 
         setTimeout(function () {
@@ -414,7 +484,7 @@
                     // น้องศรีวิบินไปมุมแชท
                     flyingSrivi.classList.add('flying');
 
-                    // แสดงหน้าต่างแชท (ถ้าเปิดได้จาก shadow DOM)
+                    // แสดงหน้าต่างแชท
                     setTimeout(function () {
                         try {
                             const chatWindow = dfMessenger.shadowRoot?.querySelector('.chat-wrapper');
@@ -444,7 +514,7 @@
                     if (window.history.length > 1) {
                         history.back();
                     } else {
-                        window.location.href = "https://google.com"; // หรือหน้าแรกที่คุณต้องการ
+                        window.location.href = "https://google.com";
                     }
                 };
             }
