@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>สื่ออัจฉริยะ: แชทบอทวัดพระธาตุไชยา</title>
+
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         html, body { height: 100%; font-family: Arial, sans-serif; overflow: hidden; }
@@ -26,6 +27,7 @@
             overflow: hidden;
             pointer-events: none;
         }
+
         .leaf {
             position: absolute;
             top: -10%;
@@ -33,6 +35,7 @@
             user-select: none;
             animation: falling-leaf 10s linear infinite;
         }
+
         @keyframes falling-leaf {
             0%   { transform: translateY(0) rotate(0deg);   opacity: 1; }
             100% { transform: translateY(120vh) rotate(720deg); opacity: 0; }
@@ -49,6 +52,7 @@
             z-index: 2;
             position: relative;
         }
+
         #content-wrapper.hidden {
             opacity: 0;
             pointer-events: none;
@@ -68,6 +72,7 @@
             transition: all 0.5s ease;
             animation: slideInRight 0.8s ease-out;
         }
+
         #video-section.hidden {
             opacity: 0;
             transform: translateX(450px);
@@ -95,6 +100,7 @@
             justify-content: center;
             line-height: 1;
         }
+
         .close-video-btn:hover {
             transform: rotate(90deg) scale(1.1);
             box-shadow: 0 5px 15px rgba(255, 107, 107, 0.6);
@@ -123,6 +129,7 @@
             position: relative;
             animation: float 6s ease-in-out infinite;
         }
+
         .character-body {
             width: 120px;
             height: 140px;
@@ -134,6 +141,7 @@
             transform: translate(-50%, -50%);
             box-shadow: 0 10px 30px rgba(212, 175, 55, 0.5);
         }
+
         .character-head {
             width: 90px;
             height: 90px;
@@ -145,6 +153,7 @@
             transform: translateX(-50%);
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
         }
+
         .character-eye {
             width: 12px;
             height: 12px;
@@ -154,6 +163,7 @@
             top: 35px;
             animation: blink 3s infinite;
         }
+
         .character-eye.left  { left: 25px; }
         .character-eye.right { right: 25px; }
 
@@ -194,6 +204,7 @@
             transition: all 0.3s ease;
             margin-top: 15px;
         }
+
         #start-chat-button:hover {
             transform: scale(1.05);
             box-shadow: 0 8px 20px rgba(212, 175, 55, 0.5);
@@ -215,6 +226,7 @@
             box-shadow: 0 4px 12px rgba(0,0,0,0.3);
             backdrop-filter: blur(6px);
         }
+
         #back-button:hover {
             background: rgba(0,0,0,0.8);
         }
@@ -231,6 +243,7 @@
             left: 50%;
             transform: translate(-50%, -50%);
         }
+
         #flying-srivi.flying {
             display: block;
             animation: fly-to-chat 2.5s cubic-bezier(0.68,-0.55,0.265,1.55) forwards;
@@ -262,6 +275,7 @@
             transform: translate(-50%, -50%);
             box-shadow: 0 5px 15px rgba(212, 175, 55, 0.5);
         }
+
         .flying-character-head {
             width: 45px;
             height: 45px;
@@ -272,6 +286,7 @@
             left: 50%;
             transform: translateX(-50%);
         }
+
         .flying-character-eye {
             width: 6px;
             height: 6px;
@@ -280,8 +295,10 @@
             position: absolute;
             top: 15px;
         }
+
         .flying-character-eye.left  { left: 12px; }
         .flying-character-eye.right { right: 12px; }
+
         .flying-character-smile {
             width: 15px;
             height: 8px;
@@ -296,11 +313,11 @@
 
         /* ธีม Dialogflow Messenger ให้เข้ากับวัด */
         df-messenger {
-            --df-messenger-header-background-color: linear-gradient(90deg,#0f7bdc,#35b3ff);
+            --df-messenger-header-background-color: transparent; /* ใช้รูป header แทนสี */
             --df-messenger-header-font-color: #ffffff;
             --df-messenger-user-message-background-color: #D4AF37;
             --df-messenger-user-message-font-color: #4C3F30;
-            --df-messenger-chat-background-color: #FBF8E8;
+            --df-messenger-chat-background-color: transparent;   /* ให้ JS ใส่รูปแทน */
             --df-messenger-bot-message: #ffffff;
             --df-messenger-bot-message-font-color: #4C3F30;
             --df-messenger-send-icon: #D4AF37;
@@ -326,6 +343,7 @@
             cursor: pointer;
             border: 3px solid rgba(255,255,255,0.9);
         }
+
         #chaiya-logo-button:hover {
             transform: translateY(-2px);
             box-shadow: 0 10px 24px rgba(0,0,0,0.45);
@@ -398,6 +416,7 @@
         language-code="th"
         intent="WELCOME">
     </df-messenger>
+
     <script>
         // เลือกเสียงผู้หญิงภาษาไทย (ถ้ามีในเครื่อง)
         let sriviVoice = null;
@@ -470,27 +489,51 @@
                 if (!dfMessenger.shadowRoot) return;
                 const shadow = dfMessenger.shadowRoot;
 
-                // ซ่อนปุ่มลอยเดิม
+                // ซ่อนปุ่มลอยเดิมของ Dialogflow
                 const floatBtn = shadow.querySelector('df-floating-button');
                 if (floatBtn) {
                     floatBtn.style.display = 'none';
                 }
 
-                // พื้นหลังหน้าต่างแชท เป็นลายไทยสีอ่อน
+                // 🔶 1) พื้นหลังด้านในกล่องแชท – ใช้รูปวัดแนวดินสอสี
                 const chatWrapper = shadow.querySelector('.chat-wrapper');
                 if (chatWrapper) {
-                    chatWrapper.style.backgroundImage = "url('thai-pattern.png')";
+                    chatWrapper.style.backgroundImage = "url('chat-temple-pencil.png')";
                     chatWrapper.style.backgroundSize = "cover";
-                    chatWrapper.style.backgroundRepeat = "repeat";
-                    chatWrapper.style.backgroundColor = "transparent";
+                    chatWrapper.style.backgroundRepeat = "no-repeat";
+                    chatWrapper.style.backgroundPosition = "center";
+                    chatWrapper.style.backgroundColor = "rgba(255,255,255,0.85)";
                 }
 
-                // bubble ต้อนรับ/proactive
+                // 🔶 2) แถบหัว (header) ด้านบน – ใช้รูปตัวการ์ตูนเกี่ยวกับวัด
+                const headerBar =
+                    shadow.querySelector('.df-messenger-titlebar') ||
+                    shadow.querySelector('.header') ||
+                    shadow.querySelector('header');
+                if (headerBar) {
+                    headerBar.style.backgroundImage = "url('chat-temple-header.png')";
+                    headerBar.style.backgroundSize = "cover";
+                    headerBar.style.backgroundRepeat = "no-repeat";
+                    headerBar.style.backgroundPosition = "center";
+                    headerBar.style.backgroundColor = "transparent";
+                }
+
+                // ปรับสีตัวหนังสือบนหัวแชทให้ชัด
+                const titleText =
+                    shadow.querySelector('.df-title') ||
+                    shadow.querySelector('.title');
+                if (titleText) {
+                    titleText.style.color = "#ffffff";
+                    titleText.style.textShadow = "0 1px 3px rgba(0,0,0,0.6)";
+                    titleText.style.fontWeight = "bold";
+                }
+
+                // 🔶 3) bubble ต้อนรับ/proactive (ถ้ามี) ให้ใช้พื้นหลังวัดดินสอสีอ่อน ๆ
                 const tooltip = shadow.querySelector('.df-messenger-tooltip, .df-tooltip');
                 if (tooltip) {
-                    tooltip.style.backgroundImage = "url('thai-pattern.png')";
+                    tooltip.style.backgroundImage = "url('chat-temple-pencil.png')";
                     tooltip.style.backgroundSize = "cover";
-                    tooltip.style.backgroundRepeat = "repeat";
+                    tooltip.style.backgroundRepeat = "no-repeat";
                 }
             }
 
@@ -508,6 +551,7 @@
                 });
             }
         });
+
         // เมื่อโหลดหน้าเสร็จ
         window.addEventListener('load', function () {
             setTimeout(function () {
