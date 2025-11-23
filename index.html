@@ -1,626 +1,666 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>สื่ออัจฉริยะ: แชทบอทวัดพระธาตุไชยา</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>สื่ออัจฉริยะ: แชทบอทวัดพระธาตุไชยา</title>
 
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        html, body { height: 100%; font-family: Arial, sans-serif; overflow: hidden; }
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { height: 100%; font-family: Arial, sans-serif; overflow: hidden; }
 
-        /* 🔥 พื้นหลังเป็นรูปวัดพระธาตุไชยา */
-        body {
-            background:
-                linear-gradient(180deg, rgba(250,243,224,0.75) 0%, rgba(251,248,232,0.75) 60%, rgba(224,202,143,0.85) 100%),
-                url("wat-bg.webp") center/cover no-repeat fixed;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
+    /* 🔥 พื้นหลังเป็นรูปวัดพระธาตุไชยา */
+    body {
+      background:
+        linear-gradient(180deg, rgba(250,243,224,0.75) 0%, rgba(251,248,232,0.75) 60%, rgba(224,202,143,0.85) 100%),
+        url("wat-bg.webp") center/cover no-repeat fixed;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
 
-        #leaf-container {
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            z-index: 1;
-            overflow: hidden;
-            pointer-events: none;
-        }
+    #leaf-container {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: 1;
+      overflow: hidden;
+      pointer-events: none;
+    }
+    .leaf {
+      position: absolute;
+      top: -10%;
+      z-index: 1;
+      user-select: none;
+      animation: falling-leaf 10s linear infinite;
+    }
+    @keyframes falling-leaf {
+      0%   { transform: translateY(0) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(120vh) rotate(720deg); opacity: 0; }
+    }
 
-        .leaf {
-            position: absolute;
-            top: -10%;
-            z-index: 1;
-            user-select: none;
-            animation: falling-leaf 10s linear infinite;
-        }
+    #content-wrapper {
+      text-align: center;
+      color: #5C4033;
+      background: rgba(255, 255, 255, 0.85);
+      border-radius: 20px;
+      padding: 40px;
+      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+      z-index: 2;
+      position: relative;
+    }
+    #content-wrapper.hidden {
+      opacity: 0;
+      pointer-events: none;
+      transform: scale(0.8);
+    }
 
-        @keyframes falling-leaf {
-            0%   { transform: translateY(0) rotate(0deg);   opacity: 1; }
-            100% { transform: translateY(120vh) rotate(720deg); opacity: 0; }
-        }
+    /* วิดีโอแนะนำ (เวอร์ชันใหม่: ปุ่มถามก่อน แล้วค่อยเปิด) */
+    #video-section {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 3;
+      background: rgba(255, 255, 255, 0.96);
+      border-radius: 20px;
+      padding: 16px 18px 18px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
+      max-width: 340px;
+      transition: all 0.5s ease;
+      animation: slideInRight 0.8s ease-out;
+    }
+    #video-section.hidden {
+      opacity: 0;
+      transform: translateX(450px);
+      pointer-events: none;
+    }
 
-        #content-wrapper {
-            text-align: center;
-            color: #5C4033;
-            background: rgba(255, 255, 255, 0.85);
-            border-radius: 20px;
-            padding: 40px;
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
-            transition: opacity 0.5s ease, transform 0.5s ease;
-            z-index: 2;
-            position: relative;
-        }
+    .close-video-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      width: 35px;
+      height: 35px;
+      background: linear-gradient(135deg, #FF6B6B, #EE5A6F);
+      border: none;
+      border-radius: 50%;
+      color: white;
+      font-size: 20px;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 3px 10px rgba(255, 107, 107, 0.4);
+      transition: all 0.3s ease;
+      z-index: 10;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 1;
+    }
+    .close-video-btn:hover {
+      transform: rotate(90deg) scale(1.1);
+      box-shadow: 0 5px 15px rgba(255, 107, 107, 0.6);
+    }
 
-        #content-wrapper.hidden {
-            opacity: 0;
-            pointer-events: none;
-            transform: scale(0.8);
-        }
+    .video-title {
+      color: #5C4033;
+      margin: 0 0 8px 0;
+      font-size: 1.05em;
+      text-align: left;
+      border-bottom: 2px solid #D4AF37;
+      padding-bottom: 6px;
+    }
+    .video-question {
+      font-size: 0.9em;
+      color: #7a5c35;
+      margin: 6px 0 10px 0;
+    }
+    .open-video-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      border-radius: 999px;
+      border: none;
+      background: #D4AF37;
+      color: #5C4033;
+      font-weight: bold;
+      cursor: pointer;
+      font-size: 0.9em;
+      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.18);
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+    .open-video-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+    }
 
-        #video-section {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 3;
-            background: rgba(255, 255, 255, 0.96);
-            border-radius: 20px;
-            padding: 20px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.25);
-            max-width: 420px;
-            transition: all 0.5s ease;
-            animation: slideInRight 0.8s ease-out;
-        }
+    #video-frame-wrapper {
+      margin-top: 10px;
+    }
+    #video-frame-wrapper.video-collapsed {
+      display: none;      /* ซ่อนตอนเริ่มต้น */
+    }
+    .video-frame-inner {
+      position: relative;
+      padding-bottom: 56.25%;  /* 16:9 */
+      height: 0;
+      overflow: hidden;
+      border-radius: 12px;
+      box-shadow: 0 5px 15px rgba(212, 175, 55, 0.45);
+      border: 3px solid #D4AF37;
+    }
+    .video-frame-inner iframe {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+    .video-caption {
+      color: #8B6F47;
+      font-size: 0.8em;
+      margin: 6px 0 0 0;
+      text-align: center;
+      font-style: italic;
+    }
 
-        #video-section.hidden {
-            opacity: 0;
-            transform: translateX(450px);
-            pointer-events: none;
-        }
+    @keyframes slideInRight {
+      from { opacity: 0; transform: translateX(100px); }
+      to   { opacity: 1; transform: translateX(0); }
+    }
 
-        .close-video-btn {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            width: 35px;
-            height: 35px;
-            background: linear-gradient(135deg, #FF6B6B, #EE5A6F);
-            border: none;
-            border-radius: 50%;
-            color: white;
-            font-size: 20px;
-            font-weight: bold;
-            cursor: pointer;
-            box-shadow: 0 3px 10px rgba(255, 107, 107, 0.4);
-            transition: all 0.3s ease;
-            z-index: 10;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            line-height: 1;
-        }
+    @media (max-width: 768px) {
+      #video-section {
+        top: 10px;
+        right: 10px;
+        left: 10px;
+        max-width: none;
+        padding: 15px;
+      }
+    }
 
-        .close-video-btn:hover {
-            transform: rotate(90deg) scale(1.1);
-            box-shadow: 0 5px 15px rgba(255, 107, 107, 0.6);
-        }
+    /* โมเดลน้องศรีวิ */
+    #nong-srivi-model {
+      width: 180px;
+      height: 180px;
+      margin: 0 auto 20px auto;
+      position: relative;
+      animation: float 6s ease-in-out infinite;
+    }
+    .character-body {
+      width: 120px;
+      height: 140px;
+      background: linear-gradient(135deg, #FFD700, #FFA500);
+      border-radius: 50% 50% 60% 60%;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      box-shadow: 0 10px 30px rgba(212, 175, 55, 0.5);
+    }
+    .character-head {
+      width: 90px;
+      height: 90px;
+      background: linear-gradient(135deg, #FFE4B5, #FFDAB9);
+      border-radius: 50%;
+      position: absolute;
+      top: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+    .character-eye {
+      width: 12px;
+      height: 12px;
+      background: #2C1810;
+      border-radius: 50%;
+      position: absolute;
+      top: 35px;
+      animation: blink 3s infinite;
+    }
+    .character-eye.left  { left: 25px; }
+    .character-eye.right { right: 25px; }
+    @keyframes blink {
+      0%, 48%, 52%, 100% { height: 12px; }
+      50% { height: 2px; }
+    }
+    .character-smile {
+      width: 30px;
+      height: 15px;
+      border: 3px solid #2C1810;
+      border-top: none;
+      border-radius: 0 0 30px 30px;
+      position: absolute;
+      top: 55px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
 
-        @keyframes slideInRight {
-            from { opacity: 0; transform: translateX(100px); }
-            to   { opacity: 1; transform: translateX(0); }
-        }
+    @keyframes float {
+      0%   { transform: translateY(0px); }
+      50%  { transform: translateY(-20px); }
+      100% { transform: translateY(0px); }
+    }
 
-        @media (max-width: 768px) {
-            #video-section {
-                top: 10px;
-                right: 10px;
-                left: 10px;
-                max-width: none;
-                padding: 15px;
-            }
-        }
+    /* ปุ่มเริ่มสนทนา */
+    #start-chat-button {
+      background-color: #D4AF37;
+      color: #5C4033;
+      border: none;
+      border-radius: 50px;
+      padding: 15px 40px;
+      font-size: 1.2em;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+      transition: all 0.3s ease;
+      margin-top: 15px;
+    }
+    #start-chat-button:hover {
+      transform: scale(1.05);
+      box-shadow: 0 8px 20px rgba(212, 175, 55, 0.5);
+    }
 
-        /* โมเดลน้องศรีวิ */
-        #nong-srivi-model {
-            width: 180px;
-            height: 180px;
-            margin: 0 auto 20px auto;
-            position: relative;
-            animation: float 6s ease-in-out infinite;
-        }
+    /* ปุ่มย้อนกลับ */
+    #back-button {
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      z-index: 5;
+      padding: 10px 18px;
+      border-radius: 999px;
+      border: none;
+      background: rgba(0,0,0,0.55);
+      color: #fff;
+      font-size: 0.9rem;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      backdrop-filter: blur(6px);
+    }
+    #back-button:hover {
+      background: rgba(0,0,0,0.8);
+    }
 
-        .character-body {
-            width: 120px;
-            height: 140px;
-            background: linear-gradient(135deg, #FFD700, #FFA500);
-            border-radius: 50% 50% 60% 60%;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.5);
-        }
+    /* เอฟเฟกต์น้องศรีวิบินไปมุมแชท */
+    #flying-srivi {
+      position: fixed;
+      width: 80px;
+      height: 80px;
+      z-index: 1000;
+      pointer-events: none;
+      display: none;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+    #flying-srivi.flying {
+      display: block;
+      animation: fly-to-chat 2.5s cubic-bezier(0.68,-0.55,0.265,1.55) forwards;
+    }
+    @keyframes fly-to-chat {
+      0% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0) rotate(0deg);
+      }
+      20% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1.2) rotate(180deg);
+      }
+      100% {
+        opacity: 0.8;
+        transform: translate(calc(50vw - 120px), calc(100vh - 140px)) scale(0.6) rotate(1080deg);
+      }
+    }
+    .flying-character-body {
+      width: 50px;
+      height: 60px;
+      background: linear-gradient(135deg, #FFD700, #FFA500);
+      border-radius: 50% 50% 60% 60%;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      box-shadow: 0 5px 15px rgba(212, 175, 55, 0.5);
+    }
+    .flying-character-head {
+      width: 45px;
+      height: 45px;
+      background: linear-gradient(135deg, #FFE4B5, #FFDAB9);
+      border-radius: 50%;
+      position: absolute;
+      top: 8px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+    .flying-character-eye {
+      width: 6px;
+      height: 6px;
+      background: #2C1810;
+      border-radius: 50%;
+      position: absolute;
+      top: 15px;
+    }
+    .flying-character-eye.left  { left: 12px; }
+    .flying-character-eye.right { right: 12px; }
+    .flying-character-smile {
+      width: 15px;
+      height: 8px;
+      border: 2px solid #2C1810;
+      border-top: none;
+      border-radius: 0 0 15px 15px;
+      position: absolute;
+      top: 25px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
 
-        .character-head {
-            width: 90px;
-            height: 90px;
-            background: linear-gradient(135deg, #FFE4B5, #FFDAB9);
-            border-radius: 50%;
-            position: absolute;
-            top: 10px;
-            left: 50%;
-            transform: translateX(-50%);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-        }
+    /* ธีม Dialogflow Messenger */
+    df-messenger {
+      --df-messenger-header-background-color: linear-gradient(90deg,#0f7bdc,#35b3ff);
+      --df-messenger-header-font-color: #ffffff;
+      --df-messenger-user-message-background-color: #D4AF37;
+      --df-messenger-user-message-font-color: #4C3F30;
+      --df-messenger-chat-background-color: #FBF8E8;
+      --df-messenger-bot-message: #ffffff;
+      --df-messenger-bot-message-font-color: #4C3F30;
+      --df-messenger-send-icon: #D4AF37;
+      --df-messenger-font-family: "Arial", sans-serif;
+      z-index: 999;
+    }
 
-        .character-eye {
-            width: 12px;
-            height: 12px;
-            background: #2C1810;
-            border-radius: 50%;
-            position: absolute;
-            top: 35px;
-            animation: blink 3s infinite;
-        }
-
-        .character-eye.left  { left: 25px; }
-        .character-eye.right { right: 25px; }
-
-        @keyframes blink {
-            0%, 48%, 52%, 100% { height: 12px; }
-            50%                 { height: 2px; }
-        }
-
-        .character-smile {
-            width: 30px;
-            height: 15px;
-            border: 3px solid #2C1810;
-            border-top: none;
-            border-radius: 0 0 30px 30px;
-            position: absolute;
-            top: 55px;
-            left: 50%;
-            transform: translateX(-50%);
-        }
-
-        @keyframes float {
-            0%   { transform: translateY(0px); }
-            50%  { transform: translateY(-20px); }
-            100% { transform: translateY(0px); }
-        }
-
-        /* ปุ่มเริ่มสนทนา */
-        #start-chat-button {
-            background-color: #D4AF37;
-            color: #5C4033;
-            border: none;
-            border-radius: 50px;
-            padding: 15px 40px;
-            font-size: 1.2em;
-            font-weight: bold;
-            cursor: pointer;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-            transition: all 0.3s ease;
-            margin-top: 15px;
-        }
-
-        #start-chat-button:hover {
-            transform: scale(1.05);
-            box-shadow: 0 8px 20px rgba(212, 175, 55, 0.5);
-        }
-
-        /* ปุ่มย้อนกลับ */
-        #back-button {
-            position: fixed;
-            bottom: 20px;
-            left: 20px;
-            z-index: 5;
-            padding: 10px 18px;
-            border-radius: 999px;
-            border: none;
-            background: rgba(0,0,0,0.55);
-            color: #fff;
-            font-size: 0.9rem;
-            cursor: pointer;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-            backdrop-filter: blur(6px);
-        }
-
-        #back-button:hover {
-            background: rgba(0,0,0,0.8);
-        }
-
-        /* เอฟเฟกต์น้องศรีวิบินไปมุมแชท */
-        #flying-srivi {
-            position: fixed;
-            width: 80px;
-            height: 80px;
-            z-index: 1000;
-            pointer-events: none;
-            display: none;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-        }
-
-        #flying-srivi.flying {
-            display: block;
-            animation: fly-to-chat 2.5s cubic-bezier(0.68,-0.55,0.265,1.55) forwards;
-        }
-
-        @keyframes fly-to-chat {
-            0% {
-                opacity: 0;
-                transform: translate(-50%, -50%) scale(0) rotate(0deg);
-            }
-            20% {
-                opacity: 1;
-                transform: translate(-50%, -50%) scale(1.2) rotate(180deg);
-            }
-            100% {
-                opacity: 0.8;
-                transform: translate(calc(50vw - 120px), calc(100vh - 140px)) scale(0.6) rotate(1080deg);
-            }
-        }
-
-        .flying-character-body {
-            width: 50px;
-            height: 60px;
-            background: linear-gradient(135deg, #FFD700, #FFA500);
-            border-radius: 50% 50% 60% 60%;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.5);
-        }
-
-        .flying-character-head {
-            width: 45px;
-            height: 45px;
-            background: linear-gradient(135deg, #FFE4B5, #FFDAB9);
-            border-radius: 50%;
-            position: absolute;
-            top: 8px;
-            left: 50%;
-            transform: translateX(-50%);
-        }
-
-        .flying-character-eye {
-            width: 6px;
-            height: 6px;
-            background: #2C1810;
-            border-radius: 50%;
-            position: absolute;
-            top: 15px;
-        }
-
-        .flying-character-eye.left  { left: 12px; }
-        .flying-character-eye.right { right: 12px; }
-
-        .flying-character-smile {
-            width: 15px;
-            height: 8px;
-            border: 2px solid #2C1810;
-            border-top: none;
-            border-radius: 0 0 15px 15px;
-            position: absolute;
-            top: 25px;
-            left: 50%;
-            transform: translateX(-50%);
-        }
-
-        /* ธีม Dialogflow Messenger ให้เข้ากับวัด */
-        df-messenger {
-            --df-messenger-header-background-color: transparent; /* ใช้รูป header แทนสี */
-            --df-messenger-header-font-color: #ffffff;
-            --df-messenger-user-message-background-color: #D4AF37;
-            --df-messenger-user-message-font-color: #4C3F30;
-            --df-messenger-chat-background-color: transparent;   /* ให้ JS ใส่รูปแทน */
-            --df-messenger-bot-message: #ffffff;
-            --df-messenger-bot-message-font-color: #4C3F30;
-            --df-messenger-send-icon: #D4AF37;
-            --df-messenger-font-family: "Arial", sans-serif;
-            z-index: 999;
-        }
-
-        /* ✅ ปุ่มโลโก้วัดพระธาตุไชยา แทนปุ่มแชทเดิม */
-        #chaiya-logo-button {
-            position: fixed;
-            bottom: 24px;
-            right: 24px;
-            width: 64px;
-            height: 64px;
-            border-radius: 50%;
-            background-color: #ffffff;
-            background-image: url("chaiya-logo.svg");
-            background-size: 80%;
-            background-position: center;
-            background-repeat: no-repeat;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.35);
-            z-index: 1100;
-            cursor: pointer;
-            border: 3px solid rgba(255,255,255,0.9);
-        }
-
-        #chaiya-logo-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 24px rgba(0,0,0,0.45);
-        }
-    </style>
+    /* ปุ่มโลโก้วัดพระธาตุไชยา แทนปุ่มแชทเดิม */
+    #chaiya-logo-button {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background-color: #ffffff;
+      background-image: url("chaiya-logo.svg");
+      background-size: 80%;
+      background-position: center;
+      background-repeat: no-repeat;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.35);
+      z-index: 1100;
+      cursor: pointer;
+      border: 3px solid rgba(255,255,255,0.9);
+    }
+    #chaiya-logo-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 24px rgba(0,0,0,0.45);
+    }
+  </style>
 </head>
 <body>
 
-    <div id="leaf-container"></div>
+  <div id="leaf-container"></div>
 
-    <!-- วิดีโอแนะนำวัด -->
-    <div id="video-section">
-        <button class="close-video-btn" id="close-video-btn" title="ปิดวิดีโอ">×</button>
-        <h3 style="color:#5C4033;margin:0 0 15px 0;font-size:1.1em;text-align:center;border-bottom:3px solid #D4AF37;padding-bottom:10px;">
-            🎬 วิดีโอแนะนำวัดพระธาตุไชยา
-        </h3>
-        <div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:15px;box-shadow:0 5px 20px rgba(212,175,55,0.4);border:4px solid #D4AF37;">
-            <iframe
-                src="https://drive.google.com/file/d/14XRRVuRav7-gRJcaGrNGKCgxKjBBx4hy/preview"
-                style="position:absolute;top:0;left:0;width:100%;height:100%;border:none;"
-                allow="autoplay; encrypted-media"
-                allowfullscreen>
-            </iframe>
-        </div>
-        <p style="color:#8B6F47;font-size:0.85em;margin:10px 0 0 0;text-align:center;font-style:italic;">
-            ✨ เรียนรู้ประวัติและความงามของวัดพระธาตุไชยา
-        </p>
+  <!-- วิดีโอแนะนำวัด (เวอร์ชันใหม่) -->
+  <div id="video-section">
+    <button class="close-video-btn" id="close-video-btn" title="ปิดวิดีโอ">×</button>
+
+    <h3 class="video-title">
+      🎬 วิดีโอแนะนำวัดพระธาตุไชยา
+    </h3>
+
+    <p class="video-question">
+      อยากดูวิดีโอแนะนำวัดพระธาตุไชยาไหมคะ? กดปุ่มด้านล่างเพื่อเปิดชมได้เลยค่ะ
+    </p>
+
+    <button id="open-video-btn" class="open-video-btn">
+      ▶ เปิดวิดีโอแนะนำ
+    </button>
+
+    <!-- ส่วนวิดีโอจริง จะซ่อนอยู่ก่อนจนกดปุ่ม -->
+    <div id="video-frame-wrapper" class="video-collapsed">
+      <div class="video-frame-inner">
+        <!-- ถ้าอยากใช้ลิงก์ Google Drive เดิม เปลี่ยน src ตรงนี้ได้ -->
+        <iframe
+          src="https://www.youtube.com/embed/66LNPaAWerk"
+          title="วิดีโอแนะนำวัดพระธาตุไชยา"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          allowfullscreen>
+        </iframe>
+      </div>
+      <p class="video-caption">
+        ✨ เรียนรู้ประวัติและความงามของวัดพระธาตุไชยาในคลิปนี้ค่ะ
+      </p>
+    </div>
+  </div>
+
+  <!-- กล่องต้อนรับ -->
+  <div id="content-wrapper">
+    <div id="nong-srivi-model">
+      <div class="character-body"></div>
+      <div class="character-head">
+        <div class="character-eye left"></div>
+        <div class="character-eye right"></div>
+        <div class="character-smile"></div>
+      </div>
     </div>
 
-    <!-- กล่องต้อนรับ -->
-    <div id="content-wrapper">
-        <div id="nong-srivi-model">
-            <div class="character-body"></div>
-            <div class="character-head">
-                <div class="character-eye left"></div>
-                <div class="character-eye right"></div>
-                <div class="character-smile"></div>
-            </div>
-        </div>
+    <h1>น้องศรีวิ ยินดีต้อนรับ</h1>
+    <p>มัคคุเทศก์ AI แห่งวัดพระธาตุไชยา พร้อมให้บริการค่ะ</p>
+    <p style="margin-top: 10px; color: #8B6914; font-size: 0.95em;">
+      💬 กดปุ่มด้านล่างเพื่อเริ่มสนทนากับน้องศรีวิได้เลยค่ะ
+    </p>
+    <button id="start-chat-button">เริ่มสนทนา</button>
+  </div>
 
-        <h1>น้องศรีวิ ยินดีต้อนรับ</h1>
-        <p>มัคคุเทศก์ AI แห่งวัดพระธาตุไชยา พร้อมให้บริการค่ะ</p>
-        <p style="margin-top: 10px; color: #8B6914; font-size: 0.95em;">
-            💬 กดปุ่มด้านล่างเพื่อเริ่มสนทนากับน้องศรีวิได้เลยค่ะ
-        </p>
-        <button id="start-chat-button">เริ่มสนทนา</button>
+  <!-- ปุ่มย้อนกลับ -->
+  <button id="back-button">⟵ ย้อนกลับ</button>
+
+  <!-- น้องศรีวิบิน -->
+  <div id="flying-srivi">
+    <div class="flying-character-body"></div>
+    <div class="flying-character-head">
+      <div class="flying-character-eye left"></div>
+      <div class="flying-character-eye right"></div>
+      <div class="flying-character-smile"></div>
     </div>
+  </div>
 
-    <!-- ปุ่มย้อนกลับ -->
-    <button id="back-button">⟵ ย้อนกลับ</button>
+  <!-- ปุ่มโลโก้เปิดแชท -->
+  <div id="chaiya-logo-button" title="คุยกับน้องศรีวิ"></div>
 
-    <!-- น้องศรีวิบิน -->
-    <div id="flying-srivi">
-        <div class="flying-character-body"></div>
-        <div class="flying-character-head">
-            <div class="flying-character-eye left"></div>
-            <div class="flying-character-eye right"></div>
-            <div class="flying-character-smile"></div>
-        </div>
-    </div>
+  <!-- Dialogflow Messenger -->
+  <script src="https://www.gstatic.com/dialogflow-console/fast/messenger/bootstrap.js?v=1"></script>
+  <df-messenger
+    chat-title="น้องศรีวิ (AI Guide)"
+    agent-id="2f3ad8d0-abd6-49dd-a7ac-ad9024c74e62"
+    language-code="th"
+    intent="WELCOME">
+  </df-messenger>
 
-    <!-- ปุ่มโลโก้เปิดแชท -->
-    <div id="chaiya-logo-button" title="คุยกับน้องศรีวิ"></div>
+  <script>
+    /* ---------- ฟังก์ชันเสียงพูดต้อนรับ (พยายามเลือกเสียงผู้หญิงภาษาไทย) ---------- */
+    let sriviVoice = null;
 
-    <!-- Dialogflow Messenger -->
-    <script src="https://www.gstatic.com/dialogflow-console/fast/messenger/bootstrap.js?v=1"></script>
-    <df-messenger
-        chat-title="น้องศรีวิ (AI Guide)"
-        agent-id="2f3ad8d0-abd6-49dd-a7ac-ad9024c74e62"
-        language-code="th"
-        intent="WELCOME">
-    </df-messenger>
+    function initSriviVoice() {
+      if (!("speechSynthesis" in window)) return;
+      const voices = window.speechSynthesis.getVoices();
+      if (!voices || voices.length === 0) return;
 
-    <script>
-        // เลือกเสียงผู้หญิงภาษาไทย (ถ้ามีในเครื่อง)
-        let sriviVoice = null;
+      // เลือกเสียงภาษาไทยที่น่าจะเป็นผู้หญิง
+      sriviVoice =
+        voices.find(v =>
+          v.lang.startsWith("th") &&
+          /female|หญิง|Kanya|Thai Female/i.test(v.name)
+        ) ||
+        voices.find(v => v.lang.startsWith("th")) ||
+        null;
+    }
 
-        function chooseSriviVoice() {
-            if (!("speechSynthesis" in window)) return;
+    if ("speechSynthesis" in window) {
+      window.speechSynthesis.onvoiceschanged = initSriviVoice;
+      initSriviVoice();
+    }
 
-            const voices = window.speechSynthesis.getVoices();
-            if (!voices || voices.length === 0) return;
+    function speak(text) {
+      if (!("speechSynthesis" in window)) {
+        console.warn("ไม่รองรับ speechSynthesis");
+        return;
+      }
+      const utter = new SpeechSynthesisUtterance(text);
+      utter.lang = "th-TH";
+      if (sriviVoice) {
+        utter.voice = sriviVoice;
+      }
+      utter.pitch = 1.1;
+      utter.rate  = 1.0;
 
-            // พยายามหาเสียงผู้หญิงภาษาไทยจากชื่อ
-            sriviVoice =
-                voices.find(v =>
-                    v.lang && v.lang.toLowerCase().startsWith("th") &&
-                    /female|หญิง|kanya|aree|tanya/i.test(v.name)
-                ) ||
-                // ถ้าไม่เจอ ใช้เสียงภาษาไทยตัวแรก
-                voices.find(v => v.lang && v.lang.toLowerCase().startsWith("th")) ||
-                null;
+      window.speechSynthesis.cancel();
+      window.speechSynthesis.speak(utter);
+    }
+
+    /* ---------- ใบไม้ร่วง ---------- */
+    function createLeaves() {
+      const container = document.getElementById('leaf-container');
+      if (!container) return;
+
+      const leafCount = 30;
+      const colors = ['#D95B00', '#E25822', '#C34A2C', '#FF4500', '#DAA520'];
+
+      for (let i = 0; i < leafCount; i++) {
+        let leaf = document.createElement('span');
+        leaf.className = 'leaf';
+        leaf.innerHTML = '🍁';
+        leaf.style.left = Math.random() * 100 + 'vw';
+        leaf.style.animationDuration = (Math.random() * 5) + 5 + 's';
+        leaf.style.animationDelay = Math.random() * 5 + 's';
+        leaf.style.fontSize = (Math.random() * 1) + 1 + 'em';
+        leaf.style.color = colors[Math.floor(Math.random() * colors.length)];
+        container.appendChild(leaf);
+      }
+    }
+
+    /* ---------- ปรับสไตล์ df-messenger หลังโหลด ---------- */
+    window.addEventListener("dfMessengerLoaded", function () {
+      console.log("✅ Dialogflow Messenger โหลดสำเร็จ");
+
+      const dfMessenger = document.querySelector('df-messenger');
+      const logoBtn = document.getElementById('chaiya-logo-button');
+
+      function styleChat() {
+        if (!dfMessenger || !dfMessenger.shadowRoot) return;
+        const shadow = dfMessenger.shadowRoot;
+
+        // ซ่อนปุ่มลอยเดิมของ Dialogflow
+        const floatBtn = shadow.querySelector('df-floating-button');
+        if (floatBtn) {
+          floatBtn.style.display = 'none';
         }
 
-        if ("speechSynthesis" in window) {
-            window.speechSynthesis.onvoiceschanged = chooseSriviVoice;
-            chooseSriviVoice();
+        // พื้นหลังหน้าต่างแชท + ลายไทย (thai-pattern.png)
+        const chatWrapper = shadow.querySelector('.chat-wrapper');
+        if (chatWrapper) {
+          chatWrapper.style.backgroundImage = "url('thai-pattern.png')";
+          chatWrapper.style.backgroundSize = "cover";
+          chatWrapper.style.backgroundRepeat = "repeat";
+          chatWrapper.style.backgroundColor = "transparent";
         }
 
-        // ฟังก์ชันเสียงพูดต้อนรับ
-        function speak(text) {
-            if (!("speechSynthesis" in window)) {
-                console.warn("เบราว์เซอร์ไม่รองรับ speechSynthesis");
-                return;
-            }
-            const utter = new SpeechSynthesisUtterance(text);
-            utter.lang = "th-TH";
-            if (sriviVoice) {
-                utter.voice = sriviVoice;
-            }
-            window.speechSynthesis.cancel();
-            window.speechSynthesis.speak(utter);
+        // bubble ต้อนรับ/proactive (ถ้ามี)
+        const tooltip = shadow.querySelector('.df-messenger-tooltip, .df-tooltip');
+        if (tooltip) {
+          tooltip.style.backgroundImage = "url('thai-pattern.png')";
+          tooltip.style.backgroundSize = "cover";
+          tooltip.style.backgroundRepeat = "repeat";
         }
+      }
 
-        // ใบไม้ร่วง
-        function createLeaves() {
-            const container = document.getElementById('leaf-container');
-            if (!container) return;
+      styleChat();
 
-            const leafCount = 30;
-            const colors = ['#D95B00', '#E25822', '#C34A2C', '#FF4500', '#DAA520'];
-
-            for (let i = 0; i < leafCount; i++) {
-                const leaf = document.createElement('span');
-                leaf.className = 'leaf';
-                leaf.innerHTML = '🍁';
-                leaf.style.left = Math.random() * 100 + 'vw';
-                leaf.style.animationDuration = (Math.random() * 5) + 5 + 's';
-                leaf.style.animationDelay = Math.random() * 5 + 's';
-                leaf.style.fontSize = (Math.random() * 1) + 1 + 'em';
-                leaf.style.color = colors[Math.floor(Math.random() * colors.length)];
-                container.appendChild(leaf);
-            }
-        }
-
-        // จัดสไตล์หน้าต่างแชท + ซ่อนปุ่มลอยเดิม
-        window.addEventListener("dfMessengerLoaded", function () {
-            const dfMessenger = document.querySelector('df-messenger');
-            const logoBtn = document.getElementById('chaiya-logo-button');
-            if (!dfMessenger) return;
-
-            function styleChat() {
-                if (!dfMessenger.shadowRoot) return;
-                const shadow = dfMessenger.shadowRoot;
-
-                // ซ่อนปุ่มลอยเดิมของ Dialogflow
-                const floatBtn = shadow.querySelector('df-floating-button');
-                if (floatBtn) {
-                    floatBtn.style.display = 'none';
-                }
-
-                // 🔶 1) พื้นหลังด้านในกล่องแชท – ใช้รูปวัดแนวดินสอสี
-                const chatWrapper = shadow.querySelector('.chat-wrapper');
-                if (chatWrapper) {
-                    chatWrapper.style.backgroundImage = "url('chat-temple-pencil.png')";
-                    chatWrapper.style.backgroundSize = "cover";
-                    chatWrapper.style.backgroundRepeat = "no-repeat";
-                    chatWrapper.style.backgroundPosition = "center";
-                    chatWrapper.style.backgroundColor = "rgba(255,255,255,0.85)";
-                }
-
-                // 🔶 2) แถบหัว (header) ด้านบน – ใช้รูปตัวการ์ตูนเกี่ยวกับวัด
-                const headerBar =
-                    shadow.querySelector('.df-messenger-titlebar') ||
-                    shadow.querySelector('.header') ||
-                    shadow.querySelector('header');
-                if (headerBar) {
-                    headerBar.style.backgroundImage = "url('chat-temple-header.png')";
-                    headerBar.style.backgroundSize = "cover";
-                    headerBar.style.backgroundRepeat = "no-repeat";
-                    headerBar.style.backgroundPosition = "center";
-                    headerBar.style.backgroundColor = "transparent";
-                }
-
-                // ปรับสีตัวหนังสือบนหัวแชทให้ชัด
-                const titleText =
-                    shadow.querySelector('.df-title') ||
-                    shadow.querySelector('.title');
-                if (titleText) {
-                    titleText.style.color = "#ffffff";
-                    titleText.style.textShadow = "0 1px 3px rgba(0,0,0,0.6)";
-                    titleText.style.fontWeight = "bold";
-                }
-
-                // 🔶 3) bubble ต้อนรับ/proactive (ถ้ามี) ให้ใช้พื้นหลังวัดดินสอสีอ่อน ๆ
-                const tooltip = shadow.querySelector('.df-messenger-tooltip, .df-tooltip');
-                if (tooltip) {
-                    tooltip.style.backgroundImage = "url('chat-temple-pencil.png')";
-                    tooltip.style.backgroundSize = "cover";
-                    tooltip.style.backgroundRepeat = "no-repeat";
-                }
-            }
-
-            styleChat();
-
-            // คลิกโลโก้ = เปิด/ปิดหน้าต่างแชท
-            if (logoBtn) {
-                logoBtn.addEventListener('click', function () {
-                    if (!dfMessenger.shadowRoot) return;
-                    const shadow = dfMessenger.shadowRoot;
-                    const floatBtn =
-                        shadow.querySelector('df-floating-button') ||
-                        shadow.querySelector('button');
-                    if (floatBtn) floatBtn.click();
-                });
-            }
+      // คลิกโลโก้ -> เปิด/ปิดแชท
+      if (logoBtn) {
+        logoBtn.addEventListener('click', function () {
+          if (!dfMessenger || !dfMessenger.shadowRoot) return;
+          const shadow = dfMessenger.shadowRoot;
+          const floatBtn = shadow.querySelector('df-floating-button') || shadow.querySelector('button');
+          if (floatBtn) floatBtn.click();
         });
+      }
+    });
 
-        // เมื่อโหลดหน้าเสร็จ
-        window.addEventListener('load', function () {
-            setTimeout(function () {
-                const startButton    = document.getElementById('start-chat-button');
-                const contentWrapper = document.getElementById('content-wrapper');
-                const flyingSrivi    = document.getElementById('flying-srivi');
-                const videoSection   = document.getElementById('video-section');
-                const closeVideoBtn  = document.getElementById('close-video-btn');
-                const backButton     = document.getElementById('back-button');
-                const dfMessenger    = document.querySelector('df-messenger');
+    /* ---------- ตั้งค่าปุ่มต่าง ๆ หลัง DOM พร้อม ---------- */
+    setTimeout(function () {
+      const startButton       = document.getElementById('start-chat-button');
+      const contentWrapper    = document.getElementById('content-wrapper');
+      const flyingSrivi       = document.getElementById('flying-srivi');
+      const videoSection      = document.getElementById('video-section');
+      const closeVideoBtn     = document.getElementById('close-video-btn');
+      const openVideoBtn      = document.getElementById('open-video-btn');
+      const videoFrameWrapper = document.getElementById('video-frame-wrapper');
+      const backButton        = document.getElementById('back-button');
+      const dfMessenger       = document.querySelector('df-messenger');
 
-                // ปุ่มเริ่มสนทนา
-                if (startButton && contentWrapper && flyingSrivi) {
-                    startButton.onclick = function () {
-                        // พูดต้อนรับเสียงผู้หญิง
-                        speak("สวัสดีค่ะ น้องศรีวิ มัคคุเทศก์เอไอแห่งวัดพระธาตุไชยา ยินดีดูแลทุกคำถามของคุณค่ะ");
+      // ปุ่มเริ่มสนทนา
+      if (startButton && contentWrapper && flyingSrivi) {
+        startButton.onclick = function () {
+          // พูดต้อนรับ
+          speak("สวัสดีค่ะ น้องศรีวิ มัคคุเทศก์เอไอแห่งวัดพระธาตุไชยา ยินดีดูแลทุกคำถามของคุณค่ะ");
 
-                        // ซ่อนกล่องต้อนรับ
-                        contentWrapper.classList.add('hidden');
+          // ซ่อนกล่องต้อนรับ
+          contentWrapper.classList.add('hidden');
 
-                        // แสดงแอนิเมชันน้องศรีวิบิน
-                        flyingSrivi.style.display = 'block';
-                        flyingSrivi.classList.add('flying');
+          // น้องศรีวิบินไปมุมแชท
+          flyingSrivi.classList.add('flying');
 
-                        // เปิดหน้าต่างแชทหลังจากบินไปที่มุม
-                        setTimeout(function () {
-                            try {
-                                if (dfMessenger && dfMessenger.shadowRoot) {
-                                    const shadow = dfMessenger.shadowRoot;
-                                    const floatBtn =
-                                        shadow.querySelector('df-floating-button') ||
-                                        shadow.querySelector('button');
-                                    if (floatBtn) floatBtn.click();
-                                }
-                            } catch (e) {
-                                console.warn(e);
-                            }
-                        }, 1300);
+          // แสดงหน้าต่างแชท
+          setTimeout(function () {
+            try {
+              const chatWindow = dfMessenger.shadowRoot?.querySelector('.chat-wrapper');
+              if (chatWindow) chatWindow.style.display = 'flex';
+            } catch (e) {
+              console.warn(e);
+            }
+          }, 1200);
 
-                        // ซ่อนตัวบินหลังบินเสร็จ
-                        setTimeout(function () {
-                            flyingSrivi.classList.remove('flying');
-                            flyingSrivi.style.display = 'none';
-                        }, 2600);
-                    };
-                }
+          setTimeout(function () {
+            flyingSrivi.classList.remove('flying');
+            flyingSrivi.style.display = 'none';
+          }, 2600);
+        };
+      }
 
-                // ปุ่มปิดวิดีโอ
-                if (closeVideoBtn && videoSection) {
-                    closeVideoBtn.onclick = function () {
-                        videoSection.classList.add('hidden');
-                    };
-                }
+      // ปุ่มเปิดวิดีโอ (โชว์ iframe)
+      if (openVideoBtn && videoFrameWrapper) {
+        openVideoBtn.onclick = function () {
+          videoFrameWrapper.classList.remove('video-collapsed');
+          openVideoBtn.style.display = 'none';
+        };
+      }
 
-                // ปุ่มย้อนกลับ
-                if (backButton) {
-                    backButton.onclick = function () {
-                        if (window.history.length > 1) {
-                            history.back();
-                        } else {
-                            window.location.href = "https://google.com";
-                        }
-                    };
-                }
+      // ปุ่มปิดวิดีโอ
+      if (closeVideoBtn && videoSection) {
+        closeVideoBtn.onclick = function () {
+          videoSection.classList.add('hidden');
 
-                // ใบไม้ร่วง
-                createLeaves();
-            }, 400);
-        });
-    </script>
+          // รีเซ็ต iframe เพื่อหยุดวิดีโอ
+          const iframe = videoFrameWrapper?.querySelector('iframe');
+          if (iframe) {
+            const src = iframe.src;
+            iframe.src = src;
+          }
+        };
+      }
+
+      // ปุ่มย้อนกลับ
+      if (backButton) {
+        backButton.onclick = function () {
+          if (window.history.length > 1) {
+            history.back();
+          } else {
+            window.location.href = "https://google.com";
+          }
+        };
+      }
+
+      // สร้างใบไม้ร่วง
+      createLeaves();
+    }, 500);
+  </script>
 </body>
 </html>
