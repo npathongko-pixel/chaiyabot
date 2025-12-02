@@ -281,6 +281,7 @@
     });
 
     // --- 3. เปลี่ยนพื้นหลังแชทเป็นรูปภาพ (Fix Background) ---
+    // --- 3. เปลี่ยนพื้นหลังแชทเป็นรูปภาพ (แก้ลิงก์ให้ถูกต้อง) ---
     window.addEventListener("dfMessengerLoaded", function () {
       const dfMessenger = document.querySelector('df-messenger');
       setTimeout(() => {
@@ -291,23 +292,25 @@
           const internalChatContainer = shadow.querySelector('.chat-wrapper');
           
           if (internalChatContainer) {
-            // 🔥 URL รูปภาพพื้นหลัง (จาก Github ของคุณ)
-            const bgUrl = "https://raw.githubusercontent.com/TAMMAZA/Wat/main/image/2.jpeg";
+            // ✅ แก้ไขลิงก์: ตัด /image ออก (สมมติว่าไฟล์อยู่หน้าแรก)
+            // ถ้ายังไม่ขึ้น ให้คุณทำตามวิธี "คลิกขวา Copy Link Address" แล้วเอามาวางแทนตรงนี้ครับ
+            const bgUrl = "https://raw.githubusercontent.com/TAMMAZA/Wat/main/2.jpeg";
             
             internalChatContainer.style.backgroundImage = `url('${bgUrl}')`;
             internalChatContainer.style.backgroundSize = "cover";
             internalChatContainer.style.backgroundPosition = "center center";
             internalChatContainer.style.backgroundRepeat = "no-repeat";
             
-            // ลบสีเทาเดิมออกเพื่อให้เห็นรูป
+            // ลบสีเทาเดิมออก
             internalChatContainer.style.backgroundColor = "transparent";
             
-            // ทำให้ลิสต์ข้อความโปร่งใสด้วย (เผื่อบางเคสสีเทามันอยู่ที่นี่)
+            // ทำให้ลิสต์ข้อความโปร่งใส
             const msgList = shadow.querySelector('df-message-list');
             if(msgList) msgList.style.backgroundColor = "transparent";
           }
-      }, 1000); // รอ 1 วินาทีชัวร์ที่สุด
+      }, 1000); 
     });
   </script>
 </body>
 </html>
+
