@@ -56,7 +56,7 @@
       transform: scale(0.8);
     }
 
-    /* วิดีโอแนะนำ (เวอร์ชันใหม่: ปุ่มถามก่อน แล้วค่อยเปิด) */
+    /* วิดีโอแนะนำ (เวอร์ชั่นใหม่: ปุ่มถามก่อน แล้วค่อยเปิด) */
     #video-section {
       position: fixed;
       top: 20px;
@@ -139,7 +139,7 @@
       margin-top: 10px;
     }
     #video-frame-wrapper.video-collapsed {
-      display: none;      /* ซ่อนตอนเริ่มต้น */
+      display: none;
     }
     .video-frame-inner {
       position: relative;
@@ -368,36 +368,13 @@
       --df-messenger-font-family: "Arial", sans-serif;
       z-index: 999;
     }
-
-    /* ปุ่มโลโก้วัดพระธาตุไชยา แทนปุ่มแชทเดิม */
-    #chaiya-logo-button {
-      position: fixed;
-      bottom: 24px;
-      right: 24px;
-      width: 64px;
-      height: 64px;
-      border-radius: 50%;
-      background-color: #ffffff;
-      background-image: url("chaiya-logo.svg");
-      background-size: 80%;
-      background-position: center;
-      background-repeat: no-repeat;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.35);
-      z-index: 1100;
-      cursor: pointer;
-      border: 3px solid rgba(255,255,255,0.9);
-    }
-    #chaiya-logo-button:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 10px 24px rgba(0,0,0,0.45);
-    }
   </style>
 </head>
 <body>
 
   <div id="leaf-container"></div>
 
-  <!-- วิดีโอแนะนำวัด (เวอร์ชันใหม่) -->
+  <!-- วิดีโอแนะนำวัด -->
   <div id="video-section">
     <button class="close-video-btn" id="close-video-btn" title="ปิดวิดีโอ">×</button>
 
@@ -413,10 +390,8 @@
       ▶ เปิดวิดีโอแนะนำ
     </button>
 
-    <!-- ส่วนวิดีโอจริง จะซ่อนอยู่ก่อนจนกดปุ่ม -->
     <div id="video-frame-wrapper" class="video-collapsed">
       <div class="video-frame-inner">
-        <!-- ถ้าอยากใช้ลิงก์ Google Drive เดิม เปลี่ยน src ตรงนี้ได้ -->
         <iframe
           src="https://www.youtube.com/embed/66LNPaAWerk"
           title="วิดีโอแนะนำวัดพระธาตุไชยา"
@@ -462,9 +437,6 @@
     </div>
   </div>
 
-  <!-- ปุ่มโลโก้เปิดแชท -->
-  <div id="chaiya-logo-button" title="คุยกับน้องศรีวิ"></div>
-
   <!-- Dialogflow Messenger -->
   <script src="https://www.gstatic.com/dialogflow-console/fast/messenger/bootstrap.js?v=1"></script>
   <df-messenger
@@ -475,7 +447,7 @@
   </df-messenger>
 
   <script>
-    /* ---------- ฟังก์ชันเสียงพูดต้อนรับ (พยายามเลือกเสียงผู้หญิงภาษาไทย) ---------- */
+    /* ---------- ฟังก์ชั่นเสียงพูดต้อนรับ ---------- */
     let sriviVoice = null;
 
     function initSriviVoice() {
@@ -483,7 +455,6 @@
       const voices = window.speechSynthesis.getVoices();
       if (!voices || voices.length === 0) return;
 
-      // เลือกเสียงภาษาไทยที่น่าจะเป็นผู้หญิง
       sriviVoice =
         voices.find(v =>
           v.lang.startsWith("th") &&
@@ -526,7 +497,7 @@
       for (let i = 0; i < leafCount; i++) {
         let leaf = document.createElement('span');
         leaf.className = 'leaf';
-        leaf.innerHTML = '🍁';
+        leaf.innerHTML = '🍂';
         leaf.style.left = Math.random() * 100 + 'vw';
         leaf.style.animationDuration = (Math.random() * 5) + 5 + 's';
         leaf.style.animationDelay = Math.random() * 5 + 's';
@@ -541,7 +512,6 @@
       console.log("✅ Dialogflow Messenger โหลดสำเร็จ");
 
       const dfMessenger = document.querySelector('df-messenger');
-      const logoBtn = document.getElementById('chaiya-logo-button');
 
       function styleChat() {
         if (!dfMessenger || !dfMessenger.shadowRoot) return;
@@ -553,7 +523,7 @@
           floatBtn.style.display = 'none';
         }
 
-        // พื้นหลังหน้าต่างแชท + ลายไทย (thai-pattern.png)
+        // พื้นหลังหน้าต่างแชท + ลายไทย
         const chatWrapper = shadow.querySelector('.chat-wrapper');
         if (chatWrapper) {
           chatWrapper.style.backgroundImage = "url('thai-pattern.png')";
@@ -562,7 +532,7 @@
           chatWrapper.style.backgroundColor = "transparent";
         }
 
-        // bubble ต้อนรับ/proactive (ถ้ามี)
+        // bubble ต้อนรับ/proactive
         const tooltip = shadow.querySelector('.df-messenger-tooltip, .df-tooltip');
         if (tooltip) {
           tooltip.style.backgroundImage = "url('thai-pattern.png')";
@@ -572,16 +542,6 @@
       }
 
       styleChat();
-
-      // คลิกโลโก้ -> เปิด/ปิดแชท
-      if (logoBtn) {
-        logoBtn.addEventListener('click', function () {
-          if (!dfMessenger || !dfMessenger.shadowRoot) return;
-          const shadow = dfMessenger.shadowRoot;
-          const floatBtn = shadow.querySelector('df-floating-button') || shadow.querySelector('button');
-          if (floatBtn) floatBtn.click();
-        });
-      }
     });
 
     /* ---------- ตั้งค่าปุ่มต่าง ๆ หลัง DOM พร้อม ---------- */
@@ -611,8 +571,12 @@
           // แสดงหน้าต่างแชท
           setTimeout(function () {
             try {
-              const chatWindow = dfMessenger.shadowRoot?.querySelector('.chat-wrapper');
-              if (chatWindow) chatWindow.style.display = 'flex';
+              if (!dfMessenger || !dfMessenger.shadowRoot) return;
+              const shadow = dfMessenger.shadowRoot;
+              const floatBtn = shadow.querySelector('df-floating-button') || shadow.querySelector('button');
+              if (floatBtn) {
+                floatBtn.click();
+              }
             } catch (e) {
               console.warn(e);
             }
@@ -625,7 +589,7 @@
         };
       }
 
-      // ปุ่มเปิดวิดีโอ (โชว์ iframe)
+      // ปุ่มเปิดวิดีโอ
       if (openVideoBtn && videoFrameWrapper) {
         openVideoBtn.onclick = function () {
           videoFrameWrapper.classList.remove('video-collapsed');
