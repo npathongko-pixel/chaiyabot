@@ -3,25 +3,25 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>สื่ออัจฉริยะ: แชทบอทวัดพระธาตุไชยา (Final Master Version)</title>
+  <title>สื่ออัจฉริยะ: แชทบอทวัดพระธาตุไชยา</title>
 
   <style>
     /* =========================================
-       1. GLOBAL STYLES & BACKGROUND
+       1. GLOBAL STYLES
        ========================================= */
     * { margin: 0; padding: 0; box-sizing: border-box; }
     html, body { height: 100%; font-family: 'Sarabun', Arial, sans-serif; overflow: hidden; }
 
-    /* พื้นหลัง */
+    /* พื้นหลังหน้าเว็บหลัก */
     body {
       background:
         linear-gradient(180deg, rgba(250,243,224,0.75) 0%, rgba(251,248,232,0.75) 60%, rgba(224,202,143,0.85) 100%),
-        url("wat-bg.webp") center/cover no-repeat fixed; /* เปลี่ยน URL รูปได้ */
+        url("wat-bg.webp") center/cover no-repeat fixed; /* รูปพื้นหลังเว็บ */
       display: flex; align-items: center; justify-content: center;
     }
 
     /* =========================================
-       2. VIDEO SECTION (ส่วนวิดีโอ)
+       2. VIDEO SECTION
        ========================================= */
     #video-section {
       position: fixed; top: 20px; right: 20px; z-index: 3;
@@ -82,7 +82,6 @@
       border-radius: 0 0 30px 30px; position: absolute; top: 55px; left: 50%; transform: translateX(-50%);
     }
 
-    /* ปุ่มเริ่มสนทนา */
     #start-chat-button {
       background-color: #D4AF37; color: #5C4033; border: none; border-radius: 50px;
       padding: 15px 40px; font-size: 1.2em; font-weight: bold; cursor: pointer;
@@ -90,14 +89,13 @@
     }
     #start-chat-button:hover { transform: scale(1.05); }
 
-    /* ปุ่มย้อนกลับ */
     #back-button {
       position: fixed; bottom: 20px; left: 20px; z-index: 5; padding: 10px 18px;
       border-radius: 999px; border: none; background: rgba(0,0,0,0.55); color: #fff; cursor: pointer;
     }
 
     /* =========================================
-       4. ANIMATIONS & HIDDEN ELEMENTS
+       4. ANIMATIONS & SMALL ELEMENTS
        ========================================= */
     @keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-20px); } }
     @keyframes blink { 0%, 48%, 52%, 100% { height: 12px; } 50% { height: 2px; } }
@@ -113,7 +111,6 @@
     #srivi-button-cover.visible { display: block; opacity: 1; }
     @keyframes float-small { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-5px); } }
 
-    /* CSS สำหรับตัวจิ๋ว */
     #srivi-button-cover .srivi-body-small {
       width: 50px; height: 55px; background: linear-gradient(135deg, #FFD700, #FFA500);
       border-radius: 50% 50% 60% 60%; position: absolute; top: 55%; left: 50%; transform: translate(-50%, -50%);
@@ -143,17 +140,15 @@
       100% { opacity: 0; transform: translate(calc(50vw - 80px), calc(50vh - 80px)) scale(0.5); }
     }
 
-    /* Dialogflow Styling (สำคัญ: ซ่อนไว้ก่อนด้วย display: none) */
+    /* Dialogflow (ซ่อนไว้ก่อน) */
     df-messenger {
       --df-messenger-button-titlebar-color: #D4AF37;
       --df-messenger-header-background-color: linear-gradient(90deg,#D4AF37,#E5C158);
       --df-messenger-user-message-background-color: #D4AF37;
-      --df-messenger-chat-background-color: transparent;
+      --df-messenger-chat-background-color: transparent; /* โปร่งใสเพื่อโชว์รูป */
       --df-messenger-send-icon: #D4AF37;
       z-index: 999;
       --df-messenger-button-icon-color: transparent;
-      
-      /* 🔥 ซ่อนไว้ก่อน เพื่อไม่ให้เด้งขึ้นมากวนใจ */
       display: none; 
     }
   </style>
@@ -207,27 +202,39 @@
   </df-messenger>
 
   <script>
-    // --- ระบบเสียง ---
+    // --- 1. ระบบเสียงพูด (Voice Config) ---
     let sriviVoice = null;
+
     function initVoice() {
       if (!("speechSynthesis" in window)) return;
       const voices = window.speechSynthesis.getVoices();
-      sriviVoice = voices.find(v => v.lang.startsWith("th") && /female/i.test(v.name)) || voices[0];
+      // พยายามหาเสียงผู้หญิง (Google Thai Female หรือเสียงไทยทั่วไป)
+      sriviVoice = voices.find(v => v.lang.startsWith("th") && /female|Google/i.test(v.name)) || 
+                   voices.find(v => v.lang.startsWith("th"));
     }
+
     if ("speechSynthesis" in window) {
       window.speechSynthesis.onvoiceschanged = initVoice;
       initVoice();
     }
+
     function speak(text) {
       if (!("speechSynthesis" in window)) return;
+      
       const utter = new SpeechSynthesisUtterance(text);
       utter.lang = "th-TH";
+      
       if (sriviVoice) utter.voice = sriviVoice;
+      
+      // ปรับจูนเสียงให้เป็นธรรมชาติ
+      utter.rate = 1.0;   // ความเร็วปกติ (ถ้าเร็วไปปรับเป็น 0.9, ช้าไปปรับ 1.1)
+      utter.pitch = 1.1;  // เสียงสูงนิดหน่อย ให้ดูสดใส (ผู้หญิง)
+      
       window.speechSynthesis.cancel();
       window.speechSynthesis.speak(utter);
     }
 
-    // --- Main Logic ---
+    // --- 2. การทำงานหลัก (Main Logic) ---
     document.addEventListener('DOMContentLoaded', () => {
        const startBtn = document.getElementById('start-chat-button');
        const contentWrapper = document.getElementById('content-wrapper');
@@ -235,20 +242,19 @@
        const sriviCover = document.getElementById('srivi-button-cover');
        
        startBtn.addEventListener('click', () => {
-         speak("สวัสดีค่ะ น้องศรีวิ พร้อมให้บริการแล้วค่ะ");
+         // 🔥 ส่วนที่เพิ่ม: พูดต้อนรับ
+         speak("น้องศรีวิ ยินดีต้อนรับค่ะ มีข้อสงสัยอะไรเกี่ยวกับวัดพระธาตุไชยา ถามน้องศรีวิได้เลยนะคะ");
+         
          contentWrapper.classList.add('hidden'); 
          flyingSrivi.classList.add('flying');
          
          setTimeout(() => {
-           // แสดงตัวบังปุ่ม
            sriviCover.classList.add('visible');
            
-           // 🔥 แสดงและเปิดแชท (แก้บั๊กซ่อนปุ่ม)
+           // เปิดแชท
            const dfMessenger = document.querySelector('df-messenger');
            if (dfMessenger) {
-             dfMessenger.style.display = 'block'; // ปลุกให้ตื่น
-             
-             // รอให้ Render แป๊บนึงแล้วค่อยสั่งคลิก
+             dfMessenger.style.display = 'block'; 
              setTimeout(() => {
                if (dfMessenger.shadowRoot) {
                   const floatBtn = dfMessenger.shadowRoot.querySelector('df-floating-button') || dfMessenger.shadowRoot.querySelector('button');
@@ -274,22 +280,33 @@
        document.getElementById('back-button').onclick = () => { history.back(); };
     });
 
-    // --- Background Fix ---
+    // --- 3. เปลี่ยนพื้นหลังแชทเป็นรูปภาพ (Fix Background) ---
     window.addEventListener("dfMessengerLoaded", function () {
       const dfMessenger = document.querySelector('df-messenger');
       setTimeout(() => {
           if (!dfMessenger || !dfMessenger.shadowRoot) return;
           const shadow = dfMessenger.shadowRoot;
+          
+          // หาตำแหน่งกล่องแชท
           const internalChatContainer = shadow.querySelector('.chat-wrapper');
+          
           if (internalChatContainer) {
+            // 🔥 URL รูปภาพพื้นหลัง (จาก Github ของคุณ)
             const bgUrl = "https://raw.githubusercontent.com/TAMMAZA/Wat/main/image/2.jpeg";
+            
             internalChatContainer.style.backgroundImage = `url('${bgUrl}')`;
             internalChatContainer.style.backgroundSize = "cover";
             internalChatContainer.style.backgroundPosition = "center center";
             internalChatContainer.style.backgroundRepeat = "no-repeat";
+            
+            // ลบสีเทาเดิมออกเพื่อให้เห็นรูป
             internalChatContainer.style.backgroundColor = "transparent";
+            
+            // ทำให้ลิสต์ข้อความโปร่งใสด้วย (เผื่อบางเคสสีเทามันอยู่ที่นี่)
+            const msgList = shadow.querySelector('df-message-list');
+            if(msgList) msgList.style.backgroundColor = "transparent";
           }
-      }, 1000);
+      }, 1000); // รอ 1 วินาทีชัวร์ที่สุด
     });
   </script>
 </body>
