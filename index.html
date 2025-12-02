@@ -281,36 +281,52 @@
     });
 
     // --- 3. เปลี่ยนพื้นหลังแชทเป็นรูปภาพ (Fix Background) ---
-    // --- 3. เปลี่ยนพื้นหลังแชทเป็นรูปภาพ (แก้ลิงก์ให้ถูกต้อง) ---
+   // --- 3. เปลี่ยนพื้นหลังแชท (แบบบังคับด้วย CSS Injection) ---
+    // วิธีนี้จะแก้ปัญหาเรื่องหา element ไม่เจอ หรือรูปไม่ขึ้นครับ
     window.addEventListener("dfMessengerLoaded", function () {
       const dfMessenger = document.querySelector('df-messenger');
+      
+      // รอให้บอทโหลดโครงสร้างเสร็จสักครู่
       setTimeout(() => {
           if (!dfMessenger || !dfMessenger.shadowRoot) return;
           const shadow = dfMessenger.shadowRoot;
           
-          // หาตำแหน่งกล่องแชท
-          const internalChatContainer = shadow.querySelector('.chat-wrapper');
+          // 🔥 ลิงก์รูปภาพที่ถูกต้องของคุณ (จาก GitHub)
+          const bgUrl = "https://raw.githubusercontent.com/TAMMAZA/Wat/main/2.jpeg";
+
+          // สร้างกฎ CSS ใหม่เพื่อฉีดเข้าไปข้างใน Shadow DOM โดยตรง
+          const styleSheet = document.createElement("style");
+          styleSheet.textContent = `
+            /* บังคับเปลี่ยนพื้นหลังที่กล่องแชท */
+            .chat-wrapper {
+              background-image: url('${bgUrl}') !important;
+              background-size: cover !important;
+              background-position: center !important;
+              background-repeat: no-repeat !important;
+              background-color: transparent !important; /* ลบสีเทาเดิม */
+            }
+            
+            /* บังคับให้ลิสต์ข้อความโปร่งใส (เพื่อให้เห็นรูป) */
+            df-message-list {
+              background-color: transparent !important;
+            }
+
+            /* (แถม) ปรับสีข้อความบอทให้อ่านง่ายขึ้นบนพื้นหลังรูปภาพ */
+            .bot-message-content {
+              background-color: rgba(255, 255, 255, 0.9) !important;
+              border-radius: 15px !important;
+              color: #000 !important;
+            }
+          `;
           
-          if (internalChatContainer) {
-            // ✅ แก้ไขลิงก์: ตัด /image ออก (สมมติว่าไฟล์อยู่หน้าแรก)
-            // ถ้ายังไม่ขึ้น ให้คุณทำตามวิธี "คลิกขวา Copy Link Address" แล้วเอามาวางแทนตรงนี้ครับ
-            const bgUrl = "https://raw.githubusercontent.com/TAMMAZA/Wat/main/2.jpeg";
-            
-            internalChatContainer.style.backgroundImage = `url('${bgUrl}')`;
-            internalChatContainer.style.backgroundSize = "cover";
-            internalChatContainer.style.backgroundPosition = "center center";
-            internalChatContainer.style.backgroundRepeat = "no-repeat";
-            
-            // ลบสีเทาเดิมออก
-            internalChatContainer.style.backgroundColor = "transparent";
-            
-            // ทำให้ลิสต์ข้อความโปร่งใส
-            const msgList = shadow.querySelector('df-message-list');
-            if(msgList) msgList.style.backgroundColor = "transparent";
-          }
-      }, 1000); 
+          // ยัดกฎนี้เข้าไปในตัวบอท
+          shadow.appendChild(styleSheet);
+          console.log("✅ Inject Background CSS เรียบร้อยแล้ว");
+          
+      }, 1500); // เพิ่มเวลาเป็น 1.5 วิ เพื่อความชัวร์
     });
   </script>
 </body>
 </html>
+
 
