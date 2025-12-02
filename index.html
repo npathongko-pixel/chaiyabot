@@ -19,25 +19,7 @@
       justify-content: center;
     }
 
-    #leaf-container {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      z-index: 1;
-      overflow: hidden;
-      pointer-events: none;
-    }
-    .leaf {
-      position: absolute;
-      top: -10%;
-      z-index: 1;
-      user-select: none;
-      animation: falling-leaf 10s linear infinite;
-    }
-    @keyframes falling-leaf {
-      0%   { transform: translateY(0) rotate(0deg); opacity: 1; }
-      100% { transform: translateY(120vh) rotate(720deg); opacity: 0; }
-    }
+    /* ลบใบไม้ร่วงออกแล้ว */
 
     #content-wrapper {
       text-align: center;
@@ -368,13 +350,24 @@
       --df-messenger-font-family: "Arial", sans-serif;
       z-index: 999;
     }
+
+    /* แถบบังปุ่มแชทบอทด้านล่าง */
+    #bottom-cover {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 90px;
+      background: linear-gradient(180deg, transparent 0%, rgba(224,202,143,0.95) 30%, rgba(210,180,130,1) 100%);
+      z-index: 998;
+      pointer-events: none;
+      border-top: 3px solid rgba(212,175,55,0.3);
+    }
   </style>
 </head>
 <body>
 
-  <div id="leaf-container"></div>
-
-  <!-- วิดีโอแนะนำวัด -->
+<!-- วิดีโอแนะนำวัด -->
   <div id="video-section">
     <button class="close-video-btn" id="close-video-btn" title="ปิดวิดีโอ">×</button>
 
@@ -426,6 +419,9 @@
 
   <!-- ปุ่มย้อนกลับ -->
   <button id="back-button">⟵ ย้อนกลับ</button>
+
+  <!-- แถบบังปุ่มแชทบอทด้านล่าง -->
+  <div id="bottom-cover"></div>
 
   <!-- น้องศรีวิบิน -->
   <div id="flying-srivi">
@@ -486,27 +482,6 @@
       window.speechSynthesis.speak(utter);
     }
 
-    /* ---------- ใบไม้ร่วง ---------- */
-    function createLeaves() {
-      const container = document.getElementById('leaf-container');
-      if (!container) return;
-
-      const leafCount = 30;
-      const colors = ['#D95B00', '#E25822', '#C34A2C', '#FF4500', '#DAA520'];
-
-      for (let i = 0; i < leafCount; i++) {
-        let leaf = document.createElement('span');
-        leaf.className = 'leaf';
-        leaf.innerHTML = '🍂';
-        leaf.style.left = Math.random() * 100 + 'vw';
-        leaf.style.animationDuration = (Math.random() * 5) + 5 + 's';
-        leaf.style.animationDelay = Math.random() * 5 + 's';
-        leaf.style.fontSize = (Math.random() * 1) + 1 + 'em';
-        leaf.style.color = colors[Math.floor(Math.random() * colors.length)];
-        container.appendChild(leaf);
-      }
-    }
-
     /* ---------- ปรับสไตล์ df-messenger หลังโหลด ---------- */
     window.addEventListener("dfMessengerLoaded", function () {
       console.log("✅ Dialogflow Messenger โหลดสำเร็จ");
@@ -523,21 +498,23 @@
           floatBtn.style.display = 'none';
         }
 
-        // พื้นหลังหน้าต่างแชท + ลายไทย
+        // พื้นหลังหน้าต่างแชท - ใช้รูปวัดพระธาตุไชยา
         const chatWrapper = shadow.querySelector('.chat-wrapper');
         if (chatWrapper) {
-          chatWrapper.style.backgroundImage = "url('thai-pattern.png')";
+          chatWrapper.style.backgroundImage = "url('wat-bg.webp')";
           chatWrapper.style.backgroundSize = "cover";
-          chatWrapper.style.backgroundRepeat = "repeat";
+          chatWrapper.style.backgroundPosition = "center";
+          chatWrapper.style.backgroundRepeat = "no-repeat";
           chatWrapper.style.backgroundColor = "transparent";
         }
 
-        // bubble ต้อนรับ/proactive
+        // bubble ต้อนรับ/proactive - ใช้รูปวัดเช่นกัน
         const tooltip = shadow.querySelector('.df-messenger-tooltip, .df-tooltip');
         if (tooltip) {
-          tooltip.style.backgroundImage = "url('thai-pattern.png')";
+          tooltip.style.backgroundImage = "url('wat-bg.webp')";
           tooltip.style.backgroundSize = "cover";
-          tooltip.style.backgroundRepeat = "repeat";
+          tooltip.style.backgroundPosition = "center";
+          tooltip.style.backgroundRepeat = "no-repeat";
         }
       }
 
@@ -621,9 +598,6 @@
           }
         };
       }
-
-      // สร้างใบไม้ร่วง
-      createLeaves();
     }, 500);
   </script>
 </body>
