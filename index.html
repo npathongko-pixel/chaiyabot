@@ -3,92 +3,29 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>สื่ออัจฉริยะ: แชทบอทวัดพระธาตุไชยา (Full Version)</title>
+  <title>สื่ออัจฉริยะ: แชทบอทวัดพระธาตุไชยา (Fixed Visibility)</title>
 
   <style>
-    /* =========================================
-       1. CORE STYLES & BACKGROUND
-       ========================================= */
+    /* 1.1 ตั้งค่าพื้นฐาน */
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    html, body { height: 100%; font-family: Arial, sans-serif; overflow: hidden; }
+    html, body { height: 100%; font-family: 'Sarabun', Arial, sans-serif; overflow: hidden; }
 
-    /* พื้นหลังวัด */
+    /* พื้นหลัง */
     body {
       background:
         linear-gradient(180deg, rgba(250,243,224,0.75) 0%, rgba(251,248,232,0.75) 60%, rgba(224,202,143,0.85) 100%),
-        url("wat-bg.webp") center/cover no-repeat fixed; /* เปลี่ยน URL ตรงนี้ถ้ามีรูปอื่น */
-      display: flex;
-      align-items: center;
-      justify-content: center;
+        url("wat-bg.webp") center/cover no-repeat fixed; /* เปลี่ยนเป็น URL รูปของคุณ */
+      display: flex; align-items: center; justify-content: center;
     }
 
-    /* =========================================
-       2. VIDEO SECTION (ส่วนวิดีโอ)
-       ========================================= */
-    #video-section {
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      z-index: 3;
-      background: rgba(255, 255, 255, 0.96);
-      border-radius: 20px;
-      padding: 16px 18px 18px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
-      max-width: 340px;
-      transition: all 0.5s ease;
-      animation: slideInRight 0.8s ease-out;
-    }
-    #video-section.hidden {
-      opacity: 0;
-      transform: translateX(450px);
-      pointer-events: none;
-    }
-    .close-video-btn {
-      position: absolute;
-      top: 10px; right: 10px; width: 35px; height: 35px;
-      background: linear-gradient(135deg, #FF6B6B, #EE5A6F);
-      border: none; border-radius: 50%; color: white; font-size: 20px; font-weight: bold;
-      cursor: pointer; box-shadow: 0 3px 10px rgba(255, 107, 107, 0.4);
-      transition: all 0.3s ease; display: flex; align-items: center; justify-content: center;
-    }
-    .close-video-btn:hover { transform: rotate(90deg) scale(1.1); }
-
-    .video-title {
-      color: #5C4033; margin: 0 0 8px 0; font-size: 1.05em; text-align: left;
-      border-bottom: 2px solid #D4AF37; padding-bottom: 6px;
-    }
-    .video-question { font-size: 0.9em; color: #7a5c35; margin: 6px 0 10px 0; }
-    
-    .open-video-btn {
-      display: inline-flex; align-items: center; gap: 6px; padding: 8px 16px;
-      border-radius: 999px; border: none; background: #D4AF37; color: #5C4033;
-      font-weight: bold; cursor: pointer; font-size: 0.9em;
-      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.18); transition: transform 0.15s ease;
-    }
-    .open-video-btn:hover { transform: translateY(-1px); }
-
-    #video-frame-wrapper { margin-top: 10px; }
-    #video-frame-wrapper.video-collapsed { display: none; }
-    .video-frame-inner {
-      position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;
-      border-radius: 12px; box-shadow: 0 5px 15px rgba(212, 175, 55, 0.45);
-      border: 3px solid #D4AF37;
-    }
-    .video-frame-inner iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
-    .video-caption { color: #8B6F47; font-size: 0.8em; margin: 6px 0 0 0; text-align: center; font-style: italic; }
-
-    @keyframes slideInRight { from { opacity: 0; transform: translateX(100px); } to { opacity: 1; transform: translateX(0); } }
-
-    /* =========================================
-       3. MAIN CONTENT (ส่วนต้อนรับตรงกลาง)
-       ========================================= */
+    /* 1.2 ส่วนเนื้อหาหลัก (Main Box) */
     #content-wrapper {
       text-align: center; color: #5C4033;
       background: rgba(255, 255, 255, 0.85);
       border-radius: 20px; padding: 40px;
       box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
       transition: opacity 0.5s ease, transform 0.5s ease;
-      z-index: 2; position: relative;
+      z-index: 2; position: relative; min-width: 320px;
     }
     #content-wrapper.hidden { opacity: 0; pointer-events: none; transform: scale(0.8); }
 
@@ -99,8 +36,8 @@
     }
     .character-body {
       width: 120px; height: 140px; background: linear-gradient(135deg, #FFD700, #FFA500);
-      border-radius: 50% 50% 60% 60%; position: absolute; top: 50%; left: 50%;
-      transform: translate(-50%, -50%); box-shadow: 0 10px 30px rgba(212, 175, 55, 0.5);
+      border-radius: 50% 50% 60% 60%; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+      box-shadow: 0 10px 30px rgba(212, 175, 55, 0.5);
     }
     .character-head {
       width: 90px; height: 90px; background: linear-gradient(135deg, #FFE4B5, #FFDAB9);
@@ -108,16 +45,14 @@
       box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
     }
     .character-eye {
-      width: 12px; height: 12px; background: #2C1810; border-radius: 50%;
-      position: absolute; top: 35px; animation: blink 3s infinite;
+      width: 12px; height: 12px; background: #2C1810; border-radius: 50%; position: absolute; top: 35px; animation: blink 3s infinite;
     }
     .character-eye.left { left: 25px; } .character-eye.right { right: 25px; }
     .character-smile {
-      width: 30px; height: 15px; border: 3px solid #2C1810; border-top: none;
-      border-radius: 0 0 30px 30px; position: absolute; top: 55px; left: 50%; transform: translateX(-50%);
+      width: 30px; height: 15px; border: 3px solid #2C1810; border-top: none; border-radius: 0 0 30px 30px;
+      position: absolute; top: 55px; left: 50%; transform: translateX(-50%);
     }
 
-    /* ปุ่มเริ่มสนทนา */
     #start-chat-button {
       background-color: #D4AF37; color: #5C4033; border: none; border-radius: 50px;
       padding: 15px 40px; font-size: 1.2em; font-weight: bold; cursor: pointer;
@@ -127,104 +62,70 @@
 
     /* ปุ่มย้อนกลับ */
     #back-button {
-      position: fixed; bottom: 20px; left: 20px; z-index: 5;
-      padding: 10px 18px; border-radius: 999px; border: none;
-      background: rgba(0,0,0,0.55); color: #fff; cursor: pointer; backdrop-filter: blur(6px);
+      position: fixed; bottom: 20px; left: 20px; z-index: 5; padding: 10px 18px;
+      border-radius: 999px; border: none; background: rgba(0,0,0,0.55); color: #fff; cursor: pointer;
     }
-    #back-button:hover { background: rgba(0,0,0,0.8); }
 
-    /* =========================================
-       4. ANIMATIONS & SMALL SRIVI (ส่วนใหม่)
-       ========================================= */
+    /* Animation */
     @keyframes float { 0% { transform: translateY(0px); } 50% { transform: translateY(-20px); } 100% { transform: translateY(0px); } }
     @keyframes blink { 0%, 48%, 52%, 100% { height: 12px; } 50% { height: 2px; } }
 
-    /* น้องศรีวิจิ๋ว (ตัวที่ใช้บังปุ่มแชท) */
+    /* 1.3 น้องศรีวิจิ๋ว (บังปุ่ม) */
     #srivi-button-cover {
-      position: fixed;
-      bottom: 16px; right: 16px; /* ตำแหน่งเดียวกับปุ่ม Dialogflow */
-      width: 65px; height: 65px;
-      z-index: 1000;
-      pointer-events: none; /* คลิกทะลุ */
+      position: fixed; bottom: 16px; right: 16px; width: 65px; height: 65px; z-index: 1000;
+      pointer-events: none; /* สำคัญ: คลิกทะลุ */
       animation: float-small 4s ease-in-out infinite;
-      display: none; /* ซ่อนก่อน รอให้กดเริ่มสนทนาค่อยโผล่ */
-      opacity: 0;
-      transition: opacity 0.5s ease;
+      display: none; opacity: 0; transition: opacity 0.5s ease;
     }
-    #srivi-button-cover.visible {
-      display: block;
-      opacity: 1;
-    }
-
+    #srivi-button-cover.visible { display: block; opacity: 1; }
     @keyframes float-small { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-5px); } }
 
-    /* ย่อส่วนน้องศรีวิ */
+    /* ส่วนประกอบตัวจิ๋ว */
     #srivi-button-cover .srivi-body-small {
       width: 50px; height: 55px; background: linear-gradient(135deg, #FFD700, #FFA500);
       border-radius: 50% 50% 60% 60%; position: absolute; top: 55%; left: 50%; transform: translate(-50%, -50%);
-      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
     }
     #srivi-button-cover .srivi-head-small {
       width: 40px; height: 40px; background: linear-gradient(135deg, #FFE4B5, #FFDAB9);
       border-radius: 50%; position: absolute; top: 5px; left: 50%; transform: translateX(-50%);
     }
     #srivi-button-cover .srivi-eye-small {
-      width: 5px; height: 5px; background: #2C1810; border-radius: 50%; position: absolute; top: 16px;
-      animation: blink 3s infinite;
+      width: 5px; height: 5px; background: #2C1810; border-radius: 50%; position: absolute; top: 16px; animation: blink 3s infinite;
     }
-    #srivi-button-cover .srivi-eye-small.left { left: 10px; }
-    #srivi-button-cover .srivi-eye-small.right { right: 10px; }
+    #srivi-button-cover .srivi-eye-small.left { left: 10px; } #srivi-button-cover .srivi-eye-small.right { right: 10px; }
     #srivi-button-cover .srivi-smile-small {
-      width: 12px; height: 6px; border: 2px solid #2C1810; border-top: none;
-      border-radius: 0 0 12px 12px; position: absolute; top: 24px; left: 50%; transform: translateX(-50%);
+      width: 12px; height: 6px; border: 2px solid #2C1810; border-top: none; border-radius: 0 0 12px 12px;
+      position: absolute; top: 24px; left: 50%; transform: translateX(-50%);
     }
 
-    /* น้องศรีวิบิน (Transition) */
+    /* 1.4 น้องศรีวิบิน */
     #flying-srivi {
-      position: fixed; width: 80px; height: 80px; z-index: 1000;
-      pointer-events: none; display: none;
+      position: fixed; width: 80px; height: 80px; z-index: 1000; pointer-events: none; display: none;
       top: 50%; left: 50%; transform: translate(-50%, -50%);
     }
-    #flying-srivi.flying {
-      display: block;
-      animation: fly-to-chat 1.5s cubic-bezier(0.68,-0.55,0.265,1.55) forwards;
-    }
+    #flying-srivi.flying { display: block; animation: fly-to-chat 1.5s cubic-bezier(0.68,-0.55,0.265,1.55) forwards; }
     @keyframes fly-to-chat {
       0% { opacity: 0; transform: translate(-50%, -50%) scale(0) rotate(0deg); }
       20% { opacity: 1; transform: translate(-50%, -50%) scale(1.2) rotate(20deg); }
       100% { opacity: 0; transform: translate(calc(50vw - 80px), calc(50vh - 80px)) scale(0.5) rotate(360deg); }
     }
-    /* (ใช้โครงสร้างเดียวกับตัวจิ๋วสำหรับตัวบิน) */
-    .flying-body { width: 50px; height: 60px; background: #FFD700; border-radius: 50%; position: absolute; top:50%; left:50%; transform:translate(-50%,-50%); }
 
-    /* =========================================
-       5. DIALOGFLOW CUSTOMIZATION
-       ========================================= */
+    /* 1.5 Dialogflow Customization */
     df-messenger {
       --df-messenger-button-titlebar-color: #D4AF37;
       --df-messenger-header-background-color: linear-gradient(90deg,#D4AF37,#E5C158);
       --df-messenger-user-message-background-color: #D4AF37;
-      --df-messenger-user-message-font-color: #4C3F30;
-      --df-messenger-chat-background-color: transparent; /* โปร่งใสเพื่อให้เห็นรูปพื้นหลัง */
+      --df-messenger-chat-background-color: transparent;
       --df-messenger-send-icon: #D4AF37;
       z-index: 999;
-      --df-messenger-button-icon-color: transparent; /* ซ่อนไอคอนเดิม */
+      --df-messenger-button-icon-color: transparent;
+      
+      /* 🔥 จุดสำคัญ: ซ่อนไว้ก่อน! อย่าเพิ่งแสดง */
+      display: none;
     }
   </style>
 </head>
 <body>
-
-  <div id="video-section">
-    <button class="close-video-btn" id="close-video-btn" title="ปิดวิดีโอ">×</button>
-    <h3 class="video-title">🎬 วิดีโอแนะนำวัดพระธาตุไชยา</h3>
-    <p class="video-question">รับชมวิดีโอแนะนำก่อนเริ่มสนทนาไหมคะ?</p>
-    <button id="open-video-btn" class="open-video-btn">▶ เปิดวิดีโอแนะนำ</button>
-    <div id="video-frame-wrapper" class="video-collapsed">
-      <div class="video-frame-inner">
-        <iframe src="https://www.youtube.com/embed/66LNPaAWerk" title="วิดีโอแนะนำ" allowfullscreen></iframe>
-      </div>
-    </div>
-  </div>
 
   <div id="content-wrapper">
     <div id="nong-srivi-model">
@@ -261,91 +162,67 @@
   </df-messenger>
 
   <script>
-    /* =========================================
-       1. ระบบเสียงพูด (FULL VERSION)
-       ========================================= */
-    let sriviVoice = null;
-    function initSriviVoice() {
-      if (!("speechSynthesis" in window)) return;
-      const voices = window.speechSynthesis.getVoices();
-      if (!voices.length) return;
-      // พยายามหาเสียงผู้หญิงไทย
-      sriviVoice = voices.find(v => v.lang.startsWith("th") && /female|หญิง|Kanya|Thai Female/i.test(v.name)) ||
-                   voices.find(v => v.lang.startsWith("th")) || voices[0];
-    }
-    if ("speechSynthesis" in window) {
-      window.speechSynthesis.onvoiceschanged = initSriviVoice;
-      initSriviVoice();
-    }
+    // --- ระบบเสียง (ถ้าต้องการ) ---
     function speak(text) {
-      if (!("speechSynthesis" in window)) return;
-      const utter = new SpeechSynthesisUtterance(text);
-      utter.lang = "th-TH";
-      if (sriviVoice) utter.voice = sriviVoice;
-      utter.pitch = 1.1; utter.rate = 1.0;
-      window.speechSynthesis.cancel();
-      window.speechSynthesis.speak(utter);
+      if ("speechSynthesis" in window) {
+        window.speechSynthesis.cancel();
+        const utter = new SpeechSynthesisUtterance(text);
+        utter.lang = "th-TH";
+        window.speechSynthesis.speak(utter);
+      }
     }
 
-    /* =========================================
-       2. LOGIC การทำงาน
-       ========================================= */
     document.addEventListener('DOMContentLoaded', () => {
        const startBtn = document.getElementById('start-chat-button');
        const contentWrapper = document.getElementById('content-wrapper');
        const flyingSrivi = document.getElementById('flying-srivi');
        const sriviCover = document.getElementById('srivi-button-cover');
        
-       // เริ่มสนทนา
        startBtn.addEventListener('click', () => {
+         // 1. พูดต้อนรับ
          speak("สวัสดีค่ะ น้องศรีวิ พร้อมให้บริการแล้วค่ะ");
-         contentWrapper.classList.add('hidden'); // ซ่อนหน้าหลัก
          
-         // เริ่มบิน
+         // 2. ซ่อนกล่องหน้าแรก
+         contentWrapper.classList.add('hidden'); 
+         
+         // 3. เริ่มบิน
          flyingSrivi.classList.add('flying');
          
-         // เมื่อบินเสร็จ (1.5s)
+         // 4. จังหวะที่บินเสร็จ (ประมาณ 1.4 วินาที)
          setTimeout(() => {
-           // 1. แสดงตัวบังปุ่ม (Static Cover)
+           // แสดงตัวบังปุ่ม
            sriviCover.classList.add('visible');
            
-           // 2. คลิกปุ่ม Dialogflow (จำลองการคลิก)
+           // 🔥 จุดสำคัญ: ปลุกแชทบอทให้ตื่น (แสดงตัวออกมา)
            const dfMessenger = document.querySelector('df-messenger');
-           if (dfMessenger && dfMessenger.shadowRoot) {
-              const floatBtn = dfMessenger.shadowRoot.querySelector('df-floating-button') || dfMessenger.shadowRoot.querySelector('button');
-              if (floatBtn) floatBtn.click();
+           if (dfMessenger) {
+             dfMessenger.style.display = 'block'; // เปลี่ยนจาก none เป็น block
            }
+
+           // รออีกนิดนึงให้มัน Render เสร็จ แล้วค่อยสั่งคลิกเปิด
+           setTimeout(() => {
+             if (dfMessenger && dfMessenger.shadowRoot) {
+                const floatBtn = dfMessenger.shadowRoot.querySelector('df-floating-button') || dfMessenger.shadowRoot.querySelector('button');
+                if (floatBtn) floatBtn.click();
+             }
+           }, 100);
+
          }, 1400);
 
-         // ซ่อนตัวบิน
          setTimeout(() => { flyingSrivi.style.display = 'none'; }, 1600);
        });
 
-       // จัดการวิดีโอ
-       document.getElementById('open-video-btn').onclick = function() {
-          document.getElementById('video-frame-wrapper').classList.remove('video-collapsed');
-          this.style.display = 'none';
-       };
-       document.getElementById('close-video-btn').onclick = function() {
-          document.getElementById('video-section').classList.add('hidden');
-          const iframe = document.querySelector('#video-frame-wrapper iframe');
-          if(iframe) iframe.src = iframe.src; // Stop video
-       };
        document.getElementById('back-button').onclick = () => { history.back(); };
     });
 
-    /* =========================================
-       3. พื้นหลัง Chat Customization
-       ========================================= */
+    // --- เปลี่ยนพื้นหลังแชท ---
     window.addEventListener("dfMessengerLoaded", function () {
       const dfMessenger = document.querySelector('df-messenger');
       setTimeout(() => {
           if (!dfMessenger || !dfMessenger.shadowRoot) return;
           const shadow = dfMessenger.shadowRoot;
           const internalChatContainer = shadow.querySelector('.chat-wrapper');
-          
           if (internalChatContainer) {
-            // 🔥 URL พื้นหลังใหม่ที่คุณต้องการ
             const bgUrl = "https://raw.githubusercontent.com/TAMMAZA/Wat/main/image/2.jpeg";
             internalChatContainer.style.backgroundImage = `url('${bgUrl}')`;
             internalChatContainer.style.backgroundSize = "cover";
